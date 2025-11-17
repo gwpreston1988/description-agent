@@ -1,0 +1,32 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	cb-gmec80
+</title>
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <style>
+        body{
+            margin:0px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#pdfviewer").height($(window).height()-5);
+        });
+        $(window).resize(function() {
+             $("#pdfviewer").height($(window).height()-5);
+        });
+    </script>
+<link rel="SHORTCUT ICON" href="https://www.goodmanmfg.com/gmfavicon.ico" type="image/x-icon" /><link rel="canonical" href="https://www.goodmanmfg.com/docs/librariesprovider6/default-document-library/cb-gmec80.pdf?view=true&amp;view=true" /></head>
+<body>
+    <form method="post" action="./pdfviewer.aspx?pdfurl=docs%2flibrariesprovider6%2fdefault-document-library%2fcb-gmec80.pdf%3fview%3dtrue" id="form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="36Jh8xnrQIagNyudnF9RbKsFcTGsyoF6fDtkMJ0j+SmEa+Tu3+BE0LE/5O8hhoB1fyhdO6M9L5tisKy6sCAf8QCqMCZr/SfEQf71DdEXOWISuEmbgzqeXHdTrIasn9Xl2vRigUg89/rBlZBtGqhDfkBBDtmw541mtdR8WO70tBJOidwo57DYWhziDalDxObKf1p6Vd+NY8Y6U5B8+HXdi9yXjF5iGFNbbm17HjtNQ3WxLEboozUKgV+VFtlPvqc9wgwAkDHzXSoVgSVA+WsqKRCyV1r2tYHx4t71nMynduKp5RZRGOMZzonq9HiKYENaQMQIC3vHqt4VFoR7ySs5sNJvhAu6jUxvQyMbu+JRccwAsd10ytj3xsdtqKGIgTVS0F9HiWQze8M72oKrKgSOjKSq+/GWzk1p5HheaqBoZJWur3nhUlCeAYYohuIti3wMevWtn0eskfUEJJIya1AaAdQKUwzHgZiFxne/CnmaM4/MXZZTrwKNCKtKQrkmIbmlLdZo0rfGUA/LoCz/aM7aJfaTaW4xeofFzCq6jFk3ACbgs0/kj/RJ96WqLIgYoesG0uvf3J/wsgjueTE4axahqRI2GwhjfeE5R+9jgcaZ/amaIH7Amq+xKpeE2c8npFFbSxP1IOWprZy2cUoHoYT/y31honBbbEDXEjF0yY26Js2jaYDeqMOOeVkaNE+ieNHZ3tUE9YIMMhkhoNoi6OPJEGXz/l8gu+/ttGDvHN0kzFr2ljLyQO8UgejhztBAJP1O8fI/Ao2XAntjWUc1U0c8Yg==" />
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BA57F87D" />
+    <object data="https://www.goodmanmfg.com/docs/librariesprovider6/default-document-library/cb-gmec80.pdf?view=true&view=true" id="pdfviewer" type="application/pdf" width="100%" height="100%">If you are unable to view file, you can download from <a href = "https://www.goodmanmfg.com/docs/librariesprovider6/default-document-library/cb-gmec80.pdf?view=true&view=true">here</a> or download <a target = "_blank" href = "http://get.adobe.com/reader/">Adobe PDF Reader</a> to view the file.</object>
+    </form>
+</body>
+</html>

@@ -298,10 +298,6 @@
                 padding: 10px;
             }
 
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-
             .compliance-badge {
                 flex-direction: column;
                 text-align: center;
@@ -379,6 +375,10 @@
                         <tr>
                             <td><strong>SEER2 Rating</strong></td>
                             <td>Up to 15.2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>EER2 Rating</strong></td>
+                            <td>None</td>
                         </tr>
                         <tr>
                             <td><strong>Compressor Type</strong></td>
@@ -459,8 +459,16 @@
                             <td>PSC</td>
                         </tr>
                         <tr>
+                            <td><strong>Motor HP</strong></td>
+                            <td>N/A HP</td>
+                        </tr>
+                        <tr>
                             <td><strong>Nominal Cooling Capacity</strong></td>
                             <td>48,000 BTU/h</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Airflow</strong></td>
+                            <td>None CFM</td>
                         </tr>
                         <tr>
                             <td><strong>Voltage</strong></td>
@@ -536,25 +544,19 @@
 
     <script>
         function showTab(event, tabId) {
-            // Hide all tab contents
             const tabContents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].classList.remove('active');
             }
-
-            // Remove active class from all buttons
+            
             const tabButtons = document.getElementsByClassName('tab-button');
             for (let i = 0; i < tabButtons.length; i++) {
                 tabButtons[i].classList.remove('active');
             }
-
-            // Show the selected tab content
+            
             document.getElementById(tabId).classList.add('active');
-
-            // Add active class to the clicked button
             event.currentTarget.classList.add('active');
         }
     </script>
-
 </body>
 </html>

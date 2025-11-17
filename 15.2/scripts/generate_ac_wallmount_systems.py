@@ -17,13 +17,11 @@ systems = [
 ]
 
 def format_tonnage(tonnage):
-    """Format tonnage to remove .0 for whole numbers"""
     if tonnage == int(tonnage):
         return str(int(tonnage))
     return str(tonnage)
 
 def format_line_size(size_str):
-    """Convert line size to fraction format"""
     conversions = {
         '0.375': '⅜"',
         '0.75': '¾"',
@@ -32,39 +30,27 @@ def format_line_size(size_str):
     }
     return conversions.get(size_str, size_str + '"')
 
-# JavaScript code stored separately to avoid f-string conflicts
 JAVASCRIPT_CODE = """
     <script>
         function showTab(event, tabId) {
-            // Hide all tab contents
             const tabContents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].classList.remove('active');
             }
             
-            // Remove active class from all tab buttons
             const tabButtons = document.getElementsByClassName('tab-button');
             for (let i = 0; i < tabButtons.length; i++) {
                 tabButtons[i].classList.remove('active');
             }
             
-            // Show the selected tab content
             document.getElementById(tabId).classList.add('active');
-            
-            // Add active class to the clicked button
             event.currentTarget.classList.add('active');
         }
-        
-        // Show first tab by default
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.tab-button').click();
-        });
     </script>
 </body>
 </html>
 """
 
-# Generate HTML for each system
 for ac_model, ah_model in systems:
     ac_data = specs[ac_model]
     ah_data = specs[ah_model]
@@ -72,334 +58,590 @@ for ac_model, ah_model in systems:
     tonnage = ac_data['tonnage']
     tonnage_display = format_tonnage(tonnage)
     
-    # Get specs
     ac_seer2 = ac_data['seer2']
-    ac_eer2 = ac_data['eer2']
+    ac_eer2 = ac_data.get('eer2', 'N/A')
     ac_cooling_capacity = ac_data['cooling_capacity_btuh']
     ac_sound = ac_data['sound_level_dba']
     ac_voltage = ac_data['voltage']
-    ac_refrigerant = "R-410A"
-    ac_warranty = ac_data.get('warranty_years', '10')
+    ac_phase = ac_data['phase']
+    ac_freq = ac_data['frequency_hz']
+    ac_mca = ac_data['mca']
+    ac_mop = ac_data['mop']
+    ac_charge = ac_data['factory_charge_oz']
+    ac_height = ac_data['height_in']
+    ac_width = ac_data['width_in']
+    ac_depth = ac_data['depth_in']
+    ac_weight = ac_data['shipping_weight_lb']
+    ac_compressor = ac_data['compressor_type']
     
     ah_airflow = ah_data['airflow_cfm']
-    ah_esp = ah_data.get('esp_iwc', '0.5')
-    ah_motor_hp = ah_data.get('motor_hp', ah_data.get('blower_motor_type', 'ECM'))
+    ah_motor_type = ah_data.get('blower_motor_type', 'ECM')
+    ah_motor_hp = ah_data.get('motor_hp', 'N/A')
     ah_voltage_options = ah_data['voltage']
-    ah_mounting = ah_data.get('mounting_type', 'Wall-Mounted')
+    ah_phase = ah_data['phase']
+    ah_freq = ah_data['frequency_hz']
     ah_heat_kw = ah_data.get('included_heat_kit_kw', 'N/A')
-    ah_filter_size = ah_data.get('filter_size', 'Standard')
+    ah_mca = ah_data['mca']
     ah_mop = ah_data['mop']
-    ah_mocp = ah_data.get('mocp', ah_data.get('mca', 'N/A'))
-    ah_warranty = ah_data.get('warranty_years', '10')
+    ah_height = ah_data['height_in']
+    ah_width = ah_data['width_in']
+    ah_depth = ah_data['depth_in']
+    ah_weight = ah_data['shipping_weight_lb']
     
-    # Line set
     liquid_line = format_line_size(str(ac_data['liquid_line_od_in']))
     suction_line = format_line_size(str(ac_data['suction_line_od_in']))
     
-    # Filename
     filename = f"../descriptions/Goodman_{tonnage_display}Ton_R410A_AC_System_{ac_model}_{ah_model}.html"
     
-    html_part1 = f"""<!DOCTYPE html>
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOODMAN {tonnage_display} Ton {ac_seer2} SEER2 R-410A Air Conditioning System with Wall-Hung Air Handler</title>
+    <title>GOODMAN {tonnage_display} Ton 15.2 SEER2 R-410A Air Conditioning System with Wall-Hung Air Handler</title>
     <style>
         * {{
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }}
-        
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
+
+        #product-container {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            color: #000;
+            background: #fff;
         }}
-        
-        .container {{
-            background-color: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }}
-        
-        h1 {{
+
+        #product-container h1 {{
+            font-size: 2.5em;
             color: #D53938;
-            font-size: 2em;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #D53938;
+            font-weight: 700;
         }}
-        
-        h2 {{
+
+        #product-container h2 {{
+            font-size: 1.8em;
+            color: #D53938;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }}
+
+        #product-container h3 {{
+            font-size: 1.4em;
+            color: #57A9F9;
+            margin: 25px 0 12px 0;
+            font-weight: 600;
+        }}
+
+        #product-container p {{
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
             color: #333;
-            font-size: 1.5em;
-            margin-top: 30px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #D53938;
         }}
-        
-        .intro {{
-            font-size: 1.1em;
-            margin-bottom: 30px;
-            color: #555;
+
+        .intro-section {{
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid #D53938;
         }}
-        
-        .doe-badge {{
-            display: inline-block;
-            background-color: #0066cc;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
+
+        .specs-table {{
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }}
-        
-        .tabs {{
+
+        .specs-table thead {{
+            background: linear-gradient(135deg, #D53938 0%, #b32d2c 100%);
+            color: white;
+        }}
+
+        .specs-table th {{
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+        }}
+
+        .specs-table td {{
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }}
+
+        .specs-table tbody tr {{
+            background: #fff;
+            transition: all 0.3s ease;
+        }}
+
+        .specs-table tbody tr:nth-child(even) {{
+            background: #f8f9fa;
+        }}
+
+        .specs-table tbody tr:hover {{
+            background: linear-gradient(90deg, #D53938 0%, #b32d2c 100%) !important;
+            color: white;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(213, 57, 56, 0.3);
+        }}
+
+        .specs-table tbody tr:hover td {{
+            color: white;
+        }}
+
+        .warranty-section {{
+            background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
+            padding: 50px 30px;
+            border-radius: 15px;
+            margin: 50px 0;
+        }}
+
+        .warranty-section h2 {{
+            color: #D53938;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }}
+
+        .warranty-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }}
+
+        .warranty-card {{
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid rgba(213,57,56,0.3);
+            transition: all 0.3s ease;
+        }}
+
+        .warranty-card:hover {{
+            background: rgba(213,57,56,0.05);
+            border-color: #D53938;
+            transform: translateY(-5px);
+        }}
+
+        .warranty-years {{
+            font-size: 48px;
+            font-weight: 700;
+            color: #D53938;
+        }}
+
+        .warranty-label {{
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }}
+
+        .cta-section {{
+            background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
+            padding: 60px 30px;
+            border-radius: 15px;
+            margin-top: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }}
+
+        .cta-content {{
+            text-align: center;
+            margin-bottom: 40px;
+        }}
+
+        .cta-section h2 {{
+            color: #D53938;
+            margin: 0 0 15px 0;
+            font-size: 28px;
+            font-weight: 700;
+        }}
+
+        .cta-section p {{
+            color: #333;
+            margin: 0;
+            font-size: 16px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }}
+
+        .compliance-badge {{
+            background: rgba(213,57,56,0.05);
+            border: 2px solid #D53938;
+            border-radius: 12px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }}
+
+        .compliance-badge:hover {{
+            background: rgba(87,169,249,0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(213,57,56,0.2);
+        }}
+
+        .badge-icon {{
+            font-size: 32px;
+            color: #D53938;
+            font-weight: 700;
+            background: rgba(213,57,56,0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }}
+
+        .badge-content {{
+            text-align: left;
+        }}
+
+        .badge-content h3 {{
+            color: #D53938;
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 700;
+        }}
+
+        .badge-content p {{
+            color: #555;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }}
+
+        .tab-container {{
+            margin: 30px 0;
+        }}
+
+        .tab-buttons {{
             display: flex;
             gap: 10px;
-            margin-top: 20px;
-            border-bottom: 2px solid #D53938;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }}
-        
+
         .tab-button {{
             padding: 12px 24px;
-            background-color: white;
-            border: 2px solid #D53938;
-            border-bottom: none;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
-            transition: all 0.3s;
-            border-radius: 4px 4px 0 0;
+            font-weight: 600;
+            color: #333;
+            transition: all 0.3s ease;
         }}
-        
+
         .tab-button:hover {{
-            background-color: #f5f5f5;
+            background: #e9ecef;
+            border-color: #57A9F9;
         }}
-        
+
         .tab-button.active {{
-            background-color: white;
+            background: linear-gradient(135deg, #D53938 0%, #b32d2c 100%);
+            color: white;
             border-color: #D53938;
-            border-bottom: 2px solid white;
-            margin-bottom: -2px;
-            font-weight: bold;
-            color: #D53938;
         }}
-        
+
         .tab-content {{
             display: none;
-            padding: 20px 0;
         }}
-        
+
         .tab-content.active {{
             display: block;
         }}
-        
-        .spec-table {{
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }}
-        
-        .spec-table th {{
-            background-color: #D53938;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-        }}
-        
-        .spec-table td {{
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }}
-        
-        .spec-table tr:nth-child(even) {{
-            background-color: #f9f9f9;
-        }}
-        
-        .spec-table td:first-child {{
-            font-weight: 600;
-            color: #555;
-            width: 40%;
-        }}
-        
-        .highlight {{
-            background-color: #fff3cd;
-            padding: 2px 6px;
-            border-radius: 3px;
-        }}
-        
+
         @media (max-width: 768px) {{
-            body {{
+            #product-container {{
+                padding: 15px;
+            }}
+
+            #product-container h1 {{
+                font-size: 1.8em;
+            }}
+
+            #product-container h2 {{
+                font-size: 1.4em;
+            }}
+
+            .specs-table {{
+                font-size: 0.9em;
+            }}
+
+            .specs-table th,
+            .specs-table td {{
                 padding: 10px;
             }}
-            
-            .container {{
+
+            .cta-section {{
+                padding: 40px 20px;
+            }}
+
+            .compliance-badge {{
+                flex-direction: column;
+                text-align: center;
                 padding: 20px;
             }}
-            
-            h1 {{
-                font-size: 1.5em;
+
+            .badge-content {{
+                text-align: center;
             }}
-            
-            .tabs {{
+
+            .tab-buttons {{
                 flex-direction: column;
             }}
-            
+
             .tab-button {{
-                border: 2px solid #D53938;
-                border-radius: 4px;
-                margin-bottom: 5px;
-            }}
-            
-            .tab-button.active {{
-                margin-bottom: 5px;
+                width: 100%;
             }}
         }}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>GOODMAN {tonnage_display}.0 Ton Up to {ac_seer2} SEER2 R-410A Air Conditioning System with Wall-Hung Air Handler</h1>
-        
-        <div class="intro">
-            <p>This complete Goodman air conditioning system combines a high-efficiency outdoor condenser with a space-saving wall-mounted air handler featuring integrated electric heat. Perfect for applications where traditional ductwork is not available or practical, this matched system delivers reliable cooling performance and supplemental heating.</p>
+    <div id="product-container">
+        <h1>GOODMAN {tonnage_display} Ton 15.2 SEER2 R-410A Air Conditioning System with Wall-Hung Air Handler</h1>
+
+        <div class="intro-section">
+            <p>Experience superior cooling comfort with this complete Goodman {tonnage_display}-ton air conditioning system featuring a space-saving wall-hung air handler with integrated electric heat. This matched system combines a high-efficiency 15.2 SEER2 air conditioner with a wall-mounted air handler that includes a {ah_heat_kw}kW electric heat kit for reliable winter heating. Perfect for homes where floor space is limited, this system delivers efficient cooling and heating with R-410A refrigerant while maximizing your usable living space.</p>
         </div>
-        
-        <div class="doe-badge">DOE Compliant - Nationwide</div>
-        
+
         <h2>Technical Specifications</h2>
-        
-        <div class="tabs">
-            <button class="tab-button" onclick="showTab(event, 'ac-specs')">Air Conditioner</button>
-            <button class="tab-button" onclick="showTab(event, 'ah-specs')">Wall Air Handler</button>
-            <button class="tab-button" onclick="showTab(event, 'lineset-specs')">Line Set</button>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showTab(event, 'ac-specs')">Air Conditioner</button>
+                <button class="tab-button" onclick="showTab(event, 'airhandler-specs')">Wall-Hung Air Handler</button>
+            </div>
+
+            <div id="ac-specs" class="tab-content active">
+                <h3>Air Conditioner — {ac_model} Specifications</h3>
+                <table class="specs-table">
+                    <thead>
+                        <tr>
+                            <th>Specification</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Manufacturer</strong></td>
+                            <td>Goodman</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tonnage</strong></td>
+                            <td>{tonnage_display} Ton</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Refrigerant</strong></td>
+                            <td>R-410A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SKU/Model No</strong></td>
+                            <td>{ac_model}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Product Type</strong></td>
+                            <td>Split System Air Conditioner</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling Capacity</strong></td>
+                            <td>{ac_cooling_capacity:,} BTU/h</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SEER2 Rating</strong></td>
+                            <td>Up to {ac_seer2}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>EER2 Rating</strong></td>
+                            <td>{ac_eer2}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compressor Type</strong></td>
+                            <td>{ac_compressor}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Voltage</strong></td>
+                            <td>{ac_voltage}V / {ac_phase}Ph / {ac_freq}Hz</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Min Circuit Ampacity</strong></td>
+                            <td>{ac_mca} A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Max Overcurrent Protection</strong></td>
+                            <td>{int(ac_mop)} A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Liquid Line Size</strong></td>
+                            <td>{liquid_line}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Suction Line Size</strong></td>
+                            <td>{suction_line}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Refrigerant Charge</strong></td>
+                            <td>{int(ac_charge)} oz</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dimensions (H×W×D)</strong></td>
+                            <td>{ac_height}" × {int(ac_width)}" × {int(ac_depth)}"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Weight</strong></td>
+                            <td>{int(ac_weight)} lbs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sound Level</strong></td>
+                            <td>{ac_sound} dBA</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="airhandler-specs" class="tab-content">
+                <h3>Wall-Hung Air Handler — {ah_model} Specifications</h3>
+                <table class="specs-table">
+                    <thead>
+                        <tr>
+                            <th>Specification</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Manufacturer</strong></td>
+                            <td>Goodman</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tonnage</strong></td>
+                            <td>{tonnage_display} Ton</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Refrigerant</strong></td>
+                            <td>R-410A Compatible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SKU/Model No</strong></td>
+                            <td>{ah_model}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Product Type</strong></td>
+                            <td>Wall-Mounted Air Handler</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motor Type</strong></td>
+                            <td>{ah_motor_type}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motor HP</strong></td>
+                            <td>{ah_motor_hp} HP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Integrated Electric Heat</strong></td>
+                            <td>{ah_heat_kw} kW</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nominal Cooling Capacity</strong></td>
+                            <td>{ac_cooling_capacity:,} BTU/h</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Airflow</strong></td>
+                            <td>{ah_airflow} CFM</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Voltage</strong></td>
+                            <td>{ah_voltage_options}V / {ah_phase}Ph / {ah_freq}Hz</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Min Circuit Ampacity</strong></td>
+                            <td>{ah_mca} A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Max Overcurrent Device</strong></td>
+                            <td>{ah_mop} A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Liquid Line Connection</strong></td>
+                            <td>{liquid_line}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Suction Line Connection</strong></td>
+                            <td>{suction_line}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metering Device</strong></td>
+                            <td>TXV (Internal)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dimensions (H×W×D)</strong></td>
+                            <td>{ah_height}" × {ah_width}" × {ah_depth}"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Weight</strong></td>
+                            <td>{int(ah_weight)} lbs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        
-        <div id="ac-specs" class="tab-content">
-            <table class="spec-table">
-                <tr>
-                    <th colspan="2">Air Conditioner Specifications - {ac_model}</th>
-                </tr>
-                <tr>
-                    <td>Cooling Capacity</td>
-                    <td>{ac_cooling_capacity:,} BTU/h</td>
-                </tr>
-                <tr>
-                    <td>SEER2 Rating</td>
-                    <td><span class="highlight">{ac_seer2}</span></td>
-                </tr>
-                <tr>
-                    <td>EER2 Rating</td>
-                    <td>{ac_eer2}</td>
-                </tr>
-                <tr>
-                    <td>Refrigerant Type</td>
-                    <td>{ac_refrigerant}</td>
-                </tr>
-                <tr>
-                    <td>Sound Rating</td>
-                    <td>{ac_sound} dB</td>
-                </tr>
-                <tr>
-                    <td>Electrical</td>
-                    <td>{ac_voltage}</td>
-                </tr>
-                <tr>
-                    <td>Warranty</td>
-                    <td>{ac_warranty}-Year Limited Warranty</td>
-                </tr>
-            </table>
+
+        <div class="warranty-section">
+            <h2>Comprehensive Warranty Protection</h2>
+            <div class="warranty-grid">
+                <div class="warranty-card">
+                    <div class="warranty-years">10</div>
+                    <div class="warranty-label">Year Parts Warranty</div>
+                </div>
+                <div class="warranty-card">
+                    <div class="warranty-years">10</div>
+                    <div class="warranty-label">Year Compressor Warranty</div>
+                </div>
+            </div>
+            <p style="margin-top: 30px; text-align: center; color: #666; font-size: 0.95em;"><strong>Note:</strong> Warranty terms and conditions apply. Unit must be registered within 60 days of installation for full coverage.</p>
         </div>
-        
-        <div id="ah-specs" class="tab-content">
-            <table class="spec-table">
-                <tr>
-                    <th colspan="2">Wall Air Handler Specifications - {ah_model}</th>
-                </tr>
-                <tr>
-                    <td>Airflow</td>
-                    <td>{ah_airflow} CFM</td>
-                </tr>
-                <tr>
-                    <td>Mounting Type</td>
-                    <td>{ah_mounting}</td>
-                </tr>
-                <tr>
-                    <td>External Static Pressure</td>
-                    <td>{ah_esp} in. w.c.</td>
-                </tr>
-                <tr>
-                    <td>Blower Motor</td>
-                    <td>{ah_motor_hp} HP ECM Variable-Speed</td>
-                </tr>
-                <tr>
-                    <td>Integrated Electric Heat</td>
-                    <td>{ah_heat_kw} kW</td>
-                </tr>
-                <tr>
-                    <td>Filter Size</td>
-                    <td>{ah_filter_size}</td>
-                </tr>
-                <tr>
-                    <td>Voltage Options</td>
-                    <td>{ah_voltage_options}</td>
-                </tr>
-                <tr>
-                    <td>MOP (Max Overcurrent Protection)</td>
-                    <td>{ah_mop} A</td>
-                </tr>
-                <tr>
-                    <td>MOCP (Min. Circuit Ampacity)</td>
-                    <td>{ah_mocp} A</td>
-                </tr>
-                <tr>
-                    <td>Warranty</td>
-                    <td>{ah_warranty}-Year Limited Warranty</td>
-                </tr>
-            </table>
-        </div>
-        
-        <div id="lineset-specs" class="tab-content">
-            <table class="spec-table">
-                <tr>
-                    <th colspan="2">Refrigerant Line Set Requirements</th>
-                </tr>
-                <tr>
-                    <td>Liquid Line Size</td>
-                    <td>{liquid_line}</td>
-                </tr>
-                <tr>
-                    <td>Suction Line Size</td>
-                    <td>{suction_line}</td>
-                </tr>
-                <tr>
-                    <td>Maximum Line Length</td>
-                    <td>50 feet (consult installation manual)</td>
-                </tr>
-                <tr>
-                    <td>Refrigerant Type</td>
-                    <td>{ac_refrigerant}</td>
-                </tr>
-            </table>
+
+        <div class="cta-section">
+            <div class="cta-content">
+                <h2>Professional Installation Required</h2>
+                <p>Certified HVAC technician installation ensures optimal performance, safety compliance, and full warranty protection.</p>
+            </div>
+            <div class="compliance-badge">
+                <div class="badge-icon">✓</div>
+                <div class="badge-content">
+                    <h3>DOE Compliant Nationwide</h3>
+                    <p>This complete R-410A 15.2 SEER2 air conditioning system meets Department of Energy efficiency requirements for residential HVAC installations across all U.S. climate zones</p>
+                </div>
+            </div>
+            <p style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9em;"><strong>Important:</strong> Check state and local codes and ordinances before purchasing. Product availability and compliance requirements may vary by region.</p>
         </div>
     </div>
 """
     
-    # Combine HTML parts with JavaScript
-    html = html_part1 + JAVASCRIPT_CODE
+    html += JAVASCRIPT_CODE
     
-    # Create descriptions directory if it doesn't exist
     os.makedirs('../descriptions', exist_ok=True)
     
-    # Write the HTML file
     with open(filename, 'w') as f:
         f.write(html)
     

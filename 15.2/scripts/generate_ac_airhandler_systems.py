@@ -1,81 +1,65 @@
 #!/usr/bin/env python3
-"""
-Generate AC + Air Handler System descriptions for Goodman 15.2 SEER2 R-410A systems
-"""
-
 import json
 import os
 
-# Load the JSON data
 with open('../15.2_specs.json', 'r') as f:
-    specs_data = json.load(f)
+    specs = json.load(f)
 
-# Output directory
-output_dir = '../descriptions'
-
-# System combinations (AC + Air Handler) from SKUS file
 systems = [
-    ('GLXS5BA1810', 'AMST24BU13'),  # 1.5 ton
-    ('GLXS5BA2410', 'AMST24BU13'),  # 2.0 ton
-    ('GLXS5BA3010', 'AMST30BU13'),  # 2.5 ton
-    ('GLXS5BA3610', 'AMST36BU13'),  # 3.0 ton
-    ('GLXS5BA4210', 'AMST42CU13'),  # 3.5 ton
-    ('GLXS5BA4810', 'AMST48CU13'),  # 4.0 ton
-    ('GLXS5BA6010', 'AMST60DU13'),  # 5.0 ton
+    ('GLXS5BA1810', 'AMST24BU13'),
+    ('GLXS5BA2410', 'AMST24BU13'),
+    ('GLXS5BA3010', 'AMST30BU13'),
+    ('GLXS5BA3610', 'AMST36BU13'),
+    ('GLXS5BA4210', 'AMST42CU13'),
+    ('GLXS5BA4810', 'AMST48CU13'),
+    ('GLXS5BA6010', 'AMST60DU13'),
 ]
 
-def format_fraction(decimal):
-    """Convert decimal to fraction string"""
-    if decimal == 0.375:
-        return "⅜\""
-    elif decimal == 0.75:
-        return "¾\""
-    elif decimal == 0.875:
-        return "⅞\""
-    elif decimal == 1.125:
-        return "1⅛\""
-    else:
-        return f"{decimal}\""
-
 def format_tonnage(tonnage):
-    """Format tonnage for display"""
     if tonnage == int(tonnage):
         return str(int(tonnage))
     return str(tonnage)
 
-# JavaScript code as a separate string to avoid f-string issues
+def format_line_size(size_str):
+    conversions = {
+        '0.375': '⅜"',
+        '0.75': '¾"',
+        '0.875': '⅞"',
+        '1.125': '1⅛"'
+    }
+    return conversions.get(size_str, size_str + '"')
+
 JAVASCRIPT_CODE = """
     <script>
         function showTab(event, tabId) {
-            // Hide all tab contents
             const tabContents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].classList.remove('active');
             }
-
-            // Remove active class from all buttons
+            
             const tabButtons = document.getElementsByClassName('tab-button');
             for (let i = 0; i < tabButtons.length; i++) {
                 tabButtons[i].classList.remove('active');
             }
-
-            // Show the selected tab content
+            
             document.getElementById(tabId).classList.add('active');
-
-            // Add active class to the clicked button
             event.currentTarget.classList.add('active');
         }
     </script>
+</body>
+</html>
 """
 
-def generate_system_description(ac_data, ah_data):
-    """Generate complete system description HTML"""
-
-    # AC specs
-    ac_model = ac_data['model_number']
-    ac_tonnage = format_tonnage(ac_data['tonnage'])
-    ac_cooling = ac_data['cooling_capacity_btuh']
+for ac_model, ah_model in systems:
+    ac_data = specs[ac_model]
+    ah_data = specs[ah_model]
+    
+    tonnage = ac_data['tonnage']
+    tonnage_display = format_tonnage(tonnage)
+    
     ac_seer2 = ac_data['seer2']
+    ac_eer2 = ac_data.get('eer2', 'N/A')
+    ac_cooling = ac_data['cooling_capacity_btuh']
     ac_compressor = ac_data['compressor_type']
     ac_voltage = ac_data['voltage']
     ac_phase = ac_data['phase']
@@ -83,18 +67,14 @@ def generate_system_description(ac_data, ah_data):
     ac_mca = ac_data['mca']
     ac_mop = ac_data['mop']
     ac_charge = ac_data['factory_charge_oz']
-    ac_liquid = format_fraction(ac_data['liquid_line_od_in'])
-    ac_suction = format_fraction(ac_data['suction_line_od_in'])
     ac_sound = ac_data['sound_level_dba']
     ac_height = ac_data['height_in']
     ac_width = ac_data['width_in']
     ac_depth = ac_data['depth_in']
     ac_weight = ac_data['shipping_weight_lb']
-
-    # Air Handler specs
-    ah_model = ah_data['model_number']
-    ah_tonnage = format_tonnage(ah_data['tonnage'])
+    
     ah_motor = ah_data['blower_motor_type']
+    ah_motor_hp = ah_data.get('motor_hp', 'N/A')
     ah_voltage = ah_data['voltage']
     ah_phase = ah_data['phase']
     ah_freq = ah_data['frequency_hz']
@@ -104,13 +84,19 @@ def generate_system_description(ac_data, ah_data):
     ah_width = ah_data['width_in']
     ah_depth = ah_data['depth_in']
     ah_weight = ah_data['shipping_weight_lb']
-
-    html_part1 = f"""<!DOCTYPE html>
+    ah_airflow = ah_data['airflow_cfm']
+    
+    liquid_line = format_line_size(str(ac_data['liquid_line_od_in']))
+    suction_line = format_line_size(str(ac_data['suction_line_od_in']))
+    
+    filename = f"../descriptions/Goodman_{tonnage_display}Ton_R410A_AC_System_{ac_model}_{ah_model}.html"
+    
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOODMAN {ac_tonnage} Ton 15.2 SEER2 R-410A Air Conditioning System with Multi-Positional Air Handler</title>
+    <title>GOODMAN {tonnage_display} Ton 15.2 SEER2 R-410A Air Conditioning System with Multi-Positional Air Handler</title>
     <style>
         * {{
             box-sizing: border-box;
@@ -405,10 +391,6 @@ def generate_system_description(ac_data, ah_data):
                 padding: 10px;
             }}
 
-            .feature-grid {{
-                grid-template-columns: 1fr;
-            }}
-
             .compliance-badge {{
                 flex-direction: column;
                 text-align: center;
@@ -435,10 +417,10 @@ def generate_system_description(ac_data, ah_data):
 </head>
 <body>
     <div id="product-container">
-        <h1>GOODMAN {ac_tonnage} Ton 15.2 SEER2 R-410A Air Conditioning System with Multi-Positional Air Handler</h1>
+        <h1>GOODMAN {tonnage_display} Ton 15.2 SEER2 R-410A Air Conditioning System with Multi-Positional Air Handler</h1>
 
         <div class="intro-section">
-            <p>Experience premium cooling comfort with this Goodman {ac_tonnage}-ton R-410A 15.2 SEER2 air conditioning system. This complete matched system combines a high-efficiency air conditioner outdoor unit with a versatile multi-positional air handler. Designed for reliable cooling performance, this system delivers exceptional energy efficiency, quiet operation, and dependable comfort with R-410A refrigerant.</p>
+            <p>Experience premium cooling comfort with this Goodman {tonnage_display}-ton R-410A 15.2 SEER2 air conditioning system. This complete matched system combines a high-efficiency air conditioner outdoor unit with a versatile multi-positional air handler. Designed for reliable cooling performance, this system delivers exceptional energy efficiency, quiet operation, and dependable comfort with R-410A refrigerant.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -465,7 +447,7 @@ def generate_system_description(ac_data, ah_data):
                         </tr>
                         <tr>
                             <td><strong>Tonnage</strong></td>
-                            <td>{ac_tonnage} Ton</td>
+                            <td>{tonnage_display} Ton</td>
                         </tr>
                         <tr>
                             <td><strong>Refrigerant</strong></td>
@@ -488,6 +470,10 @@ def generate_system_description(ac_data, ah_data):
                             <td>Up to {ac_seer2}</td>
                         </tr>
                         <tr>
+                            <td><strong>EER2 Rating</strong></td>
+                            <td>{ac_eer2}</td>
+                        </tr>
+                        <tr>
                             <td><strong>Compressor Type</strong></td>
                             <td>{ac_compressor}</td>
                         </tr>
@@ -505,11 +491,11 @@ def generate_system_description(ac_data, ah_data):
                         </tr>
                         <tr>
                             <td><strong>Liquid Line Size</strong></td>
-                            <td>{ac_liquid}</td>
+                            <td>{liquid_line}</td>
                         </tr>
                         <tr>
                             <td><strong>Suction Line Size</strong></td>
-                            <td>{ac_suction}</td>
+                            <td>{suction_line}</td>
                         </tr>
                         <tr>
                             <td><strong>Refrigerant Charge</strong></td>
@@ -547,7 +533,7 @@ def generate_system_description(ac_data, ah_data):
                         </tr>
                         <tr>
                             <td><strong>Tonnage</strong></td>
-                            <td>{ah_tonnage} Ton</td>
+                            <td>{tonnage_display} Ton</td>
                         </tr>
                         <tr>
                             <td><strong>Refrigerant</strong></td>
@@ -566,8 +552,16 @@ def generate_system_description(ac_data, ah_data):
                             <td>{ah_motor}</td>
                         </tr>
                         <tr>
+                            <td><strong>Motor HP</strong></td>
+                            <td>{ah_motor_hp} HP</td>
+                        </tr>
+                        <tr>
                             <td><strong>Nominal Cooling Capacity</strong></td>
                             <td>{ac_cooling:,} BTU/h</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Airflow</strong></td>
+                            <td>{ah_airflow} CFM</td>
                         </tr>
                         <tr>
                             <td><strong>Voltage</strong></td>
@@ -583,11 +577,11 @@ def generate_system_description(ac_data, ah_data):
                         </tr>
                         <tr>
                             <td><strong>Liquid Line Connection</strong></td>
-                            <td>{ac_liquid}</td>
+                            <td>{liquid_line}</td>
                         </tr>
                         <tr>
                             <td><strong>Suction Line Connection</strong></td>
-                            <td>{ac_suction}</td>
+                            <td>{suction_line}</td>
                         </tr>
                         <tr>
                             <td><strong>Metering Device</strong></td>
@@ -641,39 +635,14 @@ def generate_system_description(ac_data, ah_data):
         </div>
     </div>
 """
+    
+    html += JAVASCRIPT_CODE
+    
+    os.makedirs('../descriptions', exist_ok=True)
+    
+    with open(filename, 'w') as f:
+        f.write(html)
+    
+    print(f"Generated: {filename}")
 
-    # Combine HTML and JavaScript
-    html = html_part1 + JAVASCRIPT_CODE + """
-</body>
-</html>"""
-
-    return html
-
-# Generate descriptions for each system
-generated_files = []
-seen_combos = set()
-
-for ac_model, ah_model in systems:
-    # Skip duplicate combinations
-    combo_key = (ac_model, ah_model)
-    if combo_key in seen_combos:
-        continue
-    seen_combos.add(combo_key)
-
-    ac_data = specs_data[ac_model]
-    ah_data = specs_data[ah_model]
-
-    html_content = generate_system_description(ac_data, ah_data)
-
-    tonnage_display = format_tonnage(ac_data['tonnage'])
-    filename = f"Goodman_{tonnage_display}Ton_R410A_AC_System_{ac_model}_{ah_model}.html"
-    filepath = os.path.join(output_dir, filename)
-
-    with open(filepath, 'w') as f:
-        f.write(html_content)
-
-    generated_files.append(filename)
-    tonnage = format_tonnage(ac_data['tonnage'])
-    print(f"Generated: {tonnage} ton system - {ac_model} + {ah_model}")
-
-print(f"\n✓ Successfully generated {len(generated_files)} AC + Air Handler system descriptions")
+print(f"\nSuccessfully generated {len(systems)} AC + air handler system descriptions!")

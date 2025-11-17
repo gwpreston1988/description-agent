@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[PRODUCT TITLE PLACEHOLDER]</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #product-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #000;
+            background: #fff;
+        }
+
+        #product-container h1 {
+            font-size: 2.5em;
+            color: #D53938;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #D53938;
+            font-weight: 700;
+        }
+
+        #product-container h2 {
+            font-size: 1.8em;
+            color: #D53938;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+
+        #product-container p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #333;
+        }
+
+        .intro-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid #D53938;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .specs-table thead {
+            background: linear-gradient(135deg, #D53938 0%, #b32d2c 100%);
+            color: white;
+        }
+
+        .specs-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .specs-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .specs-table tbody tr {
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .specs-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .specs-table tbody tr:hover {
+            background: linear-gradient(90deg, #D53938 0%, #b32d2c 100%) !important;
+            color: white;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(213, 57, 56, 0.3);
+        }
+
+        .specs-table tbody tr:hover td {
+            color: white;
+        }
+
+        .warranty-section {
+            background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
+            padding: 50px 30px;
+            border-radius: 15px;
+            margin: 50px 0;
+        }
+
+        .warranty-section h2 {
+            color: #D53938;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+
+        .warranty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .warranty-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid rgba(213,57,56,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .warranty-card:hover {
+            background: rgba(213,57,56,0.05);
+            border-color: #D53938;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(213, 57, 56, 0.2);
+        }
+
+        .warranty-years {
+            font-size: 3em;
+            font-weight: 700;
+            color: #D53938;
+            margin-bottom: 10px;
+        }
+
+        .warranty-label {
+            color: #333;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #D53938 0%, #b32d2c 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-section h2 {
+            color: white;
+            margin: 0 0 15px 0;
+            font-size: 2em;
+        }
+
+        .cta-section p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.2em;
+            margin-bottom: 25px;
+        }
+
+        .compliance-badge {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 800px;
+            margin: 30px auto 0 auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .badge-icon {
+            font-size: 32px;
+            color: #D53938;
+            font-weight: 700;
+            background: rgba(213,57,56,0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .badge-content {
+            text-align: left;
+        }
+
+        .badge-content h3 {
+            color: #D53938;
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .badge-content p {
+            color: #555;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            #product-container {
+                padding: 15px;
+            }
+
+            #product-container h1 {
+                font-size: 1.8em;
+            }
+
+            #product-container h2 {
+                font-size: 1.4em;
+            }
+
+            .specs-table {
+                font-size: 0.9em;
+            }
+
+            .specs-table th,
+            .specs-table td {
+                padding: 10px;
+            }
+
+            .cta-section {
+                padding: 40px 20px;
+            }
+
+            .compliance-badge {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .badge-content {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="product-container">
+        <h1>[PRODUCT TITLE PLACEHOLDER]</h1>
+
+        <div class="intro-section">
+            <p>[INTRO PARAGRAPH PLACEHOLDER]</p>
+        </div>
+
+        <h2>Technical Specifications</h2>
+
+        <table class="specs-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Performance Specifications</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="specs-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Electrical Specifications</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="specs-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Refrigeration Specifications</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="specs-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Physical Specifications</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+                <tr>
+                    <td><strong>[SPEC NAME]</strong></td>
+                    <td>[SPEC VALUE]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warranty-section">
+            <h2>Comprehensive Warranty Protection</h2>
+            <div class="warranty-grid">
+                <div class="warranty-card">
+                    <div class="warranty-years">10</div>
+                    <div class="warranty-label">Year Parts Warranty</div>
+                </div>
+                <div class="warranty-card">
+                    <div class="warranty-years">10</div>
+                    <div class="warranty-label">Year Compressor Warranty</div>
+                </div>
+                <div class="warranty-card">
+                    <div class="warranty-years">∞</div>
+                    <div class="warranty-label">Lifetime Heat Exchanger Warranty</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-content">
+                <h2>Professional Installation Required</h2>
+                <p>Certified HVAC technician installation ensures optimal performance, safety compliance, and full warranty protection.</p>
+            </div>
+            <!-- FOOTER TYPE A - FOR 13.4 SEER2 OR LOWER (Northern Regions Only) -->
+            <div class="compliance-badge">
+                <div class="badge-icon">✓</div>
+                <div class="badge-content">
+                    <h3>DOE Compliant for Northern Regions</h3>
+                    <p>This equipment is approved by the Department of Energy only for use in Northern U.S. climate zones. Check state and local codes and ordinances before purchasing. Product availability and compliance requirements may vary by region.</p>
+                </div>
+            </div>
+            <!-- END FOOTER TYPE A -->
+
+            <!-- FOOTER TYPE B - FOR 14.3 SEER2 OR HIGHER (Nationally Approved) -->
+            <!-- <div class="compliance-badge">
+                <div class="badge-icon">✓</div>
+                <div class="badge-content">
+                    <h3>DOE Compliant</h3>
+                    <p>This equipment meets Department of Energy minimum efficiency requirements for all U.S. climate zones. Check state and local codes and ordinances before purchasing. Product availability and compliance requirements may vary by region.</p>
+                </div>
+            </div> -->
+            <!-- END FOOTER TYPE B -->
+        </div>
+    </div>
+</body>
+</html>

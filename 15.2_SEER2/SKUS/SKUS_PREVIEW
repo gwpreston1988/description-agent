@@ -1,0 +1,43 @@
+# Preview - One of each system type
+
+# Single Heat Pump Condenser
+GLZS5BA1810
+
+# Single AC Condenser
+GLXS5BA1810
+
+# HP + Standard Air Handler
+GLZS5BA1810, AMST24BU13
+
+# HP + Wall-Hung Air Handler
+GLZS5BA1810, AWST18SU1305
+
+# AC + Standard Air Handler
+GLXS5BA1810, AMST24BU13
+
+# AC + Wall-Hung Air Handler
+GLXS5BA1810, AWST18SU1305
+
+# AC + 80% Furnace + Upflow Coil
+GLXS5BA1810, GR9S800403ANA, CAPTA2422A3
+
+# AC + 80% Furnace + Horizontal Coil
+GLXS5BA1810, GR9S800403ANA, CHPTA2426B3
+
+# HP + 80% Furnace + Upflow Coil (Dual Fuel)
+GLZS5BA1810, GR9S800403ANA, CAPTA2422A3
+
+# HP + 80% Furnace + Horizontal Coil (Dual Fuel)
+GLZS5BA1810, GR9S800403ANA, CHPTA2426B3
+
+# AC + 92% Furnace + Upflow Coil
+GLXS5BA1810, GR9S920403ANA, CAPTA2422A3
+
+# AC + 92% Furnace + Horizontal Coil
+GLXS5BA1810, GR9S920403ANA, CHPTA2426B3
+
+# HP + 92% Furnace + Upflow Coil (Dual Fuel)
+GLZS5BA1810, GR9S920403ANA, CAPTA2422A3
+
+# HP + 92% Furnace + Horizontal Coil (Dual Fuel)
+GLZS5BA1810, GR9S920403ANA, CHPTA2426B3

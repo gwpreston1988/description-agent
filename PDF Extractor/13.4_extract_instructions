@@ -1,0 +1,242 @@
+You are Claude Code helping me build a small Python tool to parse manufacturer PDFs into a normalized JSON spec format for my 13.4 SEER2 product descriptions.
+
+CONTEXT ABOUT THE PROJECT
+- I run an HVAC e-commerce site.
+- I have a set of PDFs in this project under: ./pdfs/13-4/
+- I have a text file listing all the 13.4 SEER2 SKUs I care about under: ./13-4-skus.txt
+- I need you to:
+  1) Read the SKUs from that file,
+  2) For each model, figure out which PDF to use and what equipment_type it is,
+  3) Extract the relevant text from the PDF (where its specs live),
+  4) Convert that text into a normalized JSON object using the schemas below,
+  5) Output a single JSON file that contains one spec object per SKU.
+
+IMPORTANT DOMAIN RULES
+- These are all 13.4 SEER2 systems. For condensers in this family, SEER2 must be set to 13.4 even if the PDF shows a different number or range.
+- We are not generating “bundle/system” JSON in this step. Only **single equipment** spec JSON:
+  - AC condenser
+  - Standard air handler
+  - Wall-hung air handler
+  - Upflow / vertical evaporator coil
+  - Horizontal evaporator coil
+  - 80% furnace
+  - 92% furnace
+- Heat strips are listed separately (HKTSN / HKTSD models) and are not part of this 13.4 set.
+- AWST wall-mounted air handlers include a heat kit (show it in their JSON). Standard AMST air handlers do NOT include or show heat kit info.
+
+FILES & PATHS
+- PDFs:
+  - ./pdfs/13-4/SS-GLXS3B-R32.pdf        (AC condensers GLXS3BN…)
+  - ./pdfs/13-4/SS-GAMST.pdf             (Air handlers AMST…)
+  - ./pdfs/13-4/SS-GAWST-R32.pdf         (Wall hung air handlers AWST…)
+  - ./pdfs/13-4/SS-GCOIL.pdf             (Coils CAPTA…, CHPTA…, 0230K00044)
+  - ./pdfs/13-4/SS-GR9S80-GD9S80-R32.pdf (80% furnaces GR9S80…, GD9S80…)
+  - ./pdfs/13-4/SS-GR9S92-R32.pdf        (92% furnaces GR9S92…)
+- SKUs file:
+  - ./13-4-skus.txt
+
+MODEL FAMILIES AND MAPPINGS
+Use the following prefix → equipment_type + PDF map:
+
+- GLXS3BN → equipment_type: "ac_condenser", pdf: "SS-GLXS3B-R32.pdf"
+- AMST    → equipment_type: "air_handler", pdf: "SS-GAMST.pdf"
+- AWST    → equipment_type: "wall_hung_air_handler", pdf: "SS-GAWST-R32.pdf"
+- CAPTA   → equipment_type: "evaporator_coil_upflow", pdf: "SS-GCOIL.pdf"
+- CHPTA   → equipment_type: "evaporator_coil_horizontal", pdf: "SS-GCOIL.pdf"
+- 0230K   → equipment_type: "evaporator_coil_horizontal", pdf: "SS-GCOIL.pdf"
+- GR9S80  → equipment_type: "gas_furnace_80", pdf: "SS-GR9S80-GD9S80-R32.pdf"
+- GD9S80  → equipment_type: "gas_furnace_80", pdf: "SS-GR9S80-GD9S80-R32.pdf"
+- GR9S92  → equipment_type: "gas_furnace_92", pdf: "SS-GR9S92-R32.pdf"
+
+If a model starts with one of these prefixes, use that mapping.
+
+JSON SCHEMAS (FIELD DEFINITIONS)
+These are the field lists you must target for each equipment_type. Your job is to populate these fields from the PDF text for each model. Use null if a value truly isn’t present and cannot be safely inferred.
+
+1) equipment_type: "ac_condenser" (GLXS3BN…)
+Fields:
+
+- model_number (string, required)
+- brand (string, required)
+- series (string, optional)
+- equipment_type (string; value "Air Conditioner Condenser")
+- tonnage (number, tons, required)
+- cooling_capacity_btuh (number, BTU/h, required)
+- seer2 (number, required – FOR THIS FAMILY ALWAYS 13.4)
+- eer2 (number, optional)
+- voltage (string, required; e.g. "208/230")
+- phase (number or string, required)
+- frequency_hz (number, required)
+- mca (number, A, required)
+- mop (number, A, required)
+- refrigerant_type (string, required)
+- factory_charge_oz (number, oz, optional)
+- liquid_line_od_in (number, inches OD, required)
+- suction_line_od_in (number, inches OD, required)
+- compressor_type (string, required)
+- sound_level_dba (number, optional)
+- height_in (number, required)
+- width_in (number, required)
+- depth_in (number, required)
+- shipping_weight_lb (number, optional)
+
+2) equipment_type: "air_handler" (AMST…)
+Fields:
+
+- model_number
+- brand
+- series (optional)
+- equipment_type = "Air Handler"
+- tonnage (required)
+- airflow_cfm (required)
+- blower_motor_type (required)
+- blower_speeds (optional)
+- voltage (required)
+- phase (required)
+- frequency_hz (required)
+- mca (optional)
+- mop (optional)
+- refrigerant_type (required)
+- metering_device (optional)
+- configuration (required, e.g. "Upflow / Downflow / Horizontal")
+- cabinet_width_in (optional but nice)
+- filter_size (optional)
+- supply_return_configuration (optional)
+- height_in (required)
+- width_in (required)
+- depth_in (required)
+- shipping_weight_lb (optional)
+
+3) equipment_type: "wall_hung_air_handler" (AWST…)
+Fields:
+
+- model_number
+- brand
+- series (optional)
+- equipment_type = "Wall-Mounted Air Handler"
+- tonnage
+- airflow_cfm
+- blower_motor_type
+- voltage
+- phase
+- frequency_hz
+- mca (optional)
+- mop (optional)
+- refrigerant_type
+- metering_device (optional)
+- mounting_type (string, value "Wall-Mounted")
+- included_heat_kit_model (optional but use if present)
+- included_heat_kit_kw (optional)
+- included_heat_kit_btuh (optional)
+- height_in
+- width_in
+- depth_in
+- shipping_weight_lb (optional)
+
+4) equipment_type: "evaporator_coil_upflow" (CAPTA…)
+Fields:
+
+- model_number
+- brand
+- series (optional)
+- equipment_type = "Evaporator Coil"
+- orientation (string, value "Upflow / Vertical")
+- configuration (optional, e.g. "Cased / Multi-Position")
+- tonnage (required)
+- nominal_cooling_btuh (optional)
+- refrigerant_type (required)
+- metering_device (optional, TXV/orifice info)
+- factory_charge_oz (optional if listed)
+- liquid_line_od_in (optional but include if present)
+- suction_line_od_in (optional but include if present)
+- cabinet_width_in (required if available)
+- height_in (required)
+- depth_in (required)
+- drain_connection_size (optional)
+- shipping_weight_lb (optional)
+
+5) equipment_type: "evaporator_coil_horizontal" (CHPTA…, 0230K00044)
+Same fields as upflow coil, but:
+- orientation = "Horizontal"
+- configuration can include left/right/multi-position if given
+
+6) equipment_type: "gas_furnace_80" (GR9S80…, GD9S80…)
+Fields:
+
+- model_number
+- brand
+- series (optional)
+- equipment_type = "Gas Furnace"
+- afue (%, required)
+- input_btuh (required)
+- output_btuh (optional)
+- heating_stages (optional)
+- blower_motor_type (required)
+- airflow_cfm (optional)
+- gas_type (required)
+- gas_connection_size (optional)
+- voltage (required)
+- phase (required)
+- frequency_hz (required)
+- mca (optional)
+- mop (optional)
+- configuration (required, e.g. "Upflow / Horizontal")
+- cabinet_width_in (optional)
+- filter_size (optional)
+- height_in (required)
+- width_in (required)
+- depth_in (required)
+- shipping_weight_lb (optional)
+
+7) equipment_type: "gas_furnace_92" (GR9S92…)
+Same as gas_furnace_80 but with AFUE around 92%. Same field IDs.
+
+WHAT I WANT YOU TO BUILD
+Please work directly in this repo and:
+
+1. Create a Python module, e.g. parse_13_4_specs.py, that will:
+   - Read the SKUs from ./13-4-skus.txt (one SKU per line, ignore blank lines or comments).
+   - For each SKU, detect the correct equipment_type and PDF based on the prefix mapping above.
+   - Open the appropriate PDF from ./pdfs/13-4/.
+   - Extract the text for the product specification and dimensions sections that contain this model.
+     - Easiest: iterate pages and look for the model_number string; when found, capture that page plus a couple following pages into a text snippet.
+   - For now, put these snippets into an intermediate data structure: { model_number, equipment_type, pdf, raw_text }.
+
+2. Using your own LLM reasoning (you, Claude) and the raw_text, map values into the correct JSON fields for that equipment_type:
+   - Do NOT invent data that isn’t there.
+   - It’s OK to infer tonnage from BTU (e.g. 18,000 BTU/h ≈ 1.5 tons) if that’s how the sheet is structured.
+   - For GLXS3BN condensers in this family, set seer2 = 13.4 even if the PDF printout looks slightly different.
+   - Cast numeric fields to numbers where appropriate.
+   - If something is missing in the PDF, set the corresponding JSON field to null.
+
+3. Produce a final JSON file in the project root called:
+   - 13-4-specs.json
+
+The structure should be EITHER:
+- an array of objects, one per SKU, OR
+- an object keyed by model_number, like:
+  {
+    "GLXS3BN1810": { ...fields... },
+    "AMST24BU13": { ...fields... },
+    ...
+  }
+
+I slightly prefer the second (object keyed by model_number).
+
+HOW TO PROCEED
+- First, inspect the directory and open ./13-4-skus.txt so you see the SKUs.
+- Then open each of the PDFs in ./pdfs/13-4/ to confirm layout of the spec tables.
+- Next, implement the Python code to build an intermediate JSON with { model_number, equipment_type, pdf, raw_text }.
+- Then, for each equipment_type, implement a helper that takes (raw_text, equipment_type) and returns a normalized spec dict that matches the field IDs above.
+  - You can do the field mapping logic using string matching and your own understanding of the PDF text.
+- Finally, write the combined 13-4-specs.json file.
+
+IMPORTANT STYLE NOTES
+- Show me the code you write in full files, not snippets only.
+- Aim for clear, maintainable code — small functions like:
+  - detect_family(model)
+  - extract_model_snippet(pdf_path, model)
+  - parse_snippet_to_spec(raw_text, equipment_type)
+- When you need to make assumptions, briefly explain them in comments.
+
+Once you have the first full pass working for a few SKUs (one condenser, one air handler, one coil, one furnace), extend it to all of them and show me the resulting JSON structure.

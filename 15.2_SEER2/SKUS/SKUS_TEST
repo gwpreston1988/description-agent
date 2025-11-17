@@ -1,0 +1,17 @@
+# Test SKUS file - Only systems with complete specs
+
+# Single AC condensers
+GLXS5BA1810
+GLXS5BA2410
+
+# Single HP condensers
+GLZS5BA1810
+GLZS5BA2410
+
+# AC + Air Handler Systems
+GLXS5BA1810, AMST24BU13
+GLXS5BA2410, AMST24BU13
+
+# HP + Air Handler Systems
+GLZS5BA1810, AMST24BU13
+GLZS5BA2410, AMST24BU13

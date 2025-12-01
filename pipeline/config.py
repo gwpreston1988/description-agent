@@ -16,6 +16,7 @@ TEMPLATES_DIR = BASE_DIR / "Scripts"
 SEER_DIRS = {
     "13.4": BASE_DIR / "13.4_SEER2",
     "14.3": BASE_DIR / "14.3_SEER2",
+    "Solace_14.3": BASE_DIR / "Solace_14.3",
     "15.2": BASE_DIR / "15.2_SEER2",
     "16.2": BASE_DIR / "16.2_SEER2",
     "17.2": BASE_DIR / "17.2_SEER2",
@@ -24,6 +25,17 @@ SEER_DIRS = {
 
 # Component type detection patterns (prefix-based)
 COMPONENT_PATTERNS = {
+    # Solace - 14.3 SEER2
+    'S-GLXS4BA': 'AC_Condenser',
+    'S-GLZS4BA': 'HP_Condenser',
+    'S-AMST': 'AirHandler_Standard',
+    'S-AWST': 'AirHandler_Wall',
+    'S-GR9S80': 'Furnace_80AFUE',
+    'S-GR9S92': 'Furnace_92AFUE',
+    'S-CAPTA': 'Coil_Upflow',
+    'S-CHPTA': 'Coil_Horizontal',
+    'S-HKTS': 'Thermostat',
+
     # Condensers - 15.2 SEER2
     'GLXS5': 'AC_Condenser',
     'GLZS5': 'HP_Condenser',
@@ -32,12 +44,23 @@ COMPONENT_PATTERNS = {
     'GXV6SS': 'AC_Condenser',
     'GZV6SA': 'HP_Condenser',
 
+    # Condensers - 17.2 SEER2
+    'GLXT7CA': 'AC_Condenser',
+    'GLZT7CA': 'HP_Condenser',
+
+    # Condensers - 17.5 SEER2
+    'GZV7SA': 'HP_Condenser',
+    'GSZV7SA': 'HP_Condenser',  # Same specs as GZV7SA
+
     # Air Handlers - 15.2 SEER2
     'AMST': 'AirHandler_Standard',
     'AWST': 'AirHandler_Wall',
 
     # Air Handlers - 16.2 SEER2
     'AHVE': 'AirHandler_Standard',
+
+    # Air Handlers - 17.2 SEER2
+    'AMVT': 'AirHandler_Standard',
 
     # Evaporator Coils - 15.2 SEER2
     'CAPTA': 'Coil_Upflow',
@@ -61,6 +84,13 @@ COMPONENT_PATTERNS = {
     'GRVT9608': 'Furnace_96AFUE',
     'GRVT9610': 'Furnace_96AFUE',
     'GRVT9612': 'Furnace_96AFUE',
+
+    # Gas Furnaces - 17.2 SEER2 (same as 16.2)
+    'GRVT80': 'Furnace_80AFUE',
+    'GRVT96': 'Furnace_96AFUE',
+
+    # Gas Furnaces - 17.5 SEER2 (same patterns as 16.2/17.2)
+    # Already covered by GRVT80 and GRVT96 patterns above
 
     # Thermostats (to be ignored/skipped)
     'GTST': 'Thermostat',

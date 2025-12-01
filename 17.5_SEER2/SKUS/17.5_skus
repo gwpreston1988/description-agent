@@ -1,0 +1,61 @@
+Product Name,SKU,MSRP,Default Price
+Goodman 2 Ton Heat Pump Variable Capacity 17.5 SEER2 R-32,GZV7SA2410,$3386.90,$3079.00
+Goodman 3 Ton Heat Pump Variable Capacity 17.5 SEER2 R-32,GZV7SA3610,$4211.90,$3829.00
+Goodman 3.5 Ton Heat Pump Variable Capacity 17.5 SEER2 R-32,GZV7SA4210,$4401.10,$4001.00
+Goodman 4 Ton Heat Pump Variable Capacity 17.5 SEER2 R-32,GZV7SA4810,$4774.00,$4340.00
+Goodman 5 Ton Heat Pump Variable Capacity 17.5 SEER2 R-32,GZV7SA6010,$6591.20,$5992.00
+Goodman 3 Ton Variable Speed ComfortNet EEV Air Handler 21" Wide,AHVE36CP1300,$2360.60,$2146.00
+Goodman 3.5 Ton Variable Speed ComfortNet EEV Air Handler 21" Wide,AHVE42CP1300,$2448.60,$2226.00
+Goodman 5 Ton Variable Speed ComfortNet EEV Air Handler 21" Wide,AHVE60DP1300,$2600.40,$2364.00
+Goodman 5Kw Heat kit,HKTSN05X1,$111.10,$101.00
+Goodman 8Kw Heat kit,HKTSN08X1,$137.50,$125.00
+Goodman 10Kw Heat kit,HKTSN10X1,$148.50,$135.00
+Goodman 15 KW Heat kit,HKTSD15XA,$306.90,$279.00
+Goodman 80% 60K BTU Variable Speed 3 Ton Drive Gas Furnace 17" Wide W/ R32 Control Board,GRVT800603BN,$2085.60,$1896.00
+Goodman 80% 60K BTU Variable Speed 4 Ton Drive Gas Furnace 17" Wide W/ R32 Control Board,GRVT800604BN,$2274.80,$2068.00
+Goodman 80% 80K BTU Variable Speed 3 Ton Drive Gas Furnace 17" Wide W/ R32 Control Board,GRVT800803BN,$2325.40,$2114.00
+Goodman 80% 80K BTU Variable Speed 4 Ton Drive Gas Furnace 21" Wide W/ R32 Control Board,GRVT800804CN,$2384.80,$2168.00
+Goodman 80% 80K BTU Variable Speed 5 Ton Drive Gas Furnace 21" Wide W/ R32 Control Board,GRVT800805CN,$2445.30,$2223.00
+Goodman 80% 80K BTU Variable Speed 5 Ton Drive Gas Furnace 24" Wide W/ R32 Control Board,GRVT800805DN,$2467.30,$2243.00
+Goodman 80% 100K BTU Variable Speed 5 Ton Drive Gas Furnace 21" Wide W/ R32 Control Board,GRVT801005CN,$2593.80,$2358.00
+Goodman 96% 40K BTU Variable Speed 3 Ton Drive Gas Furnace 17" Wide W/ R32 Control Board,GRVT960403BN,$2470.60,$2246.00
+Goodman 96% 60K BTU Variable Speed 3 Ton Drive Gas Furnace 17" Wide W/ R32 Control Board,GRVT960603BN,$2564.10,$2331.00
+Goodman 96% 80K BTU Variable Speed 3 Ton Drive Gas Furnace 17" Wide W/ R32 Control Board,GRVT960803BN,$3088.80,$2808.00
+Goodman 96% 80K BTU Variable Speed 4 Ton Drive Gas Furnace 21" Wide W/ R32 Control Board,GRVT960804CN,$3122.90,$2839.00
+Goodman 96% 100K BTU Variable Speed 5 Ton Drive Gas Furnace 21" Wide W/ R32 Control Board,GRVT961005CN,$3391.30,$3083.00
+Goodman 96% 100K BTU Variable Speed 5 Ton Drive Gas Furnace 24" Wide W/ R32 Control Board,GRVT961005DN,$3509.00,$3190.00
+Goodman 96% 120K BTU Variable Speed 5 Ton Drive Gas Furnace 24" Wide W/ R32 Control Board,GRVT961205DN,$3539.80,$3218.00
+Goodman Upflow 2.5 Ton EEV Coil 17" Wide,CAPEA3022B3,$885.50,$805.00
+Goodman Upflow 4 Ton EEV Coil 21" Wide,CAPEA4830C3,$1046.10,$951.00
+Goodman Upflow 5 Ton EEV Coil 21" Wide,CAPEA6030C3,$1080.20,$982.00
+Goodman Horizontal 2.5 Ton EEV Coil 17" Wide,CHPEA3026B3,$749.10,$681.00
+Goodman Horizontal 4 Ton EEV Coil 21" Wide,CHPEA4830C3,$943.80,$858.00
+Goodman Horizontal 5 Ton EEV Coil 21" Wide,CHPEA6030C3,$962.50,$875.00
+Goodman Amana Smart Controller,ATST-CWE-BL-A,$1540.00,$1400.00
+Goodman Smart Controller,GTST-CW-WH-A,$550.00,$500.00
+Goodman Daikin Smart Controller,DTST-TOU-A,$1045.00,$950.00
+Goodman 2 Ton Full Modulating Heat Pump System 17.5 SEER2 21" Wide R-32,"GZV7SA2410, AHVE36CP1300, GTST-CW-WH-A",$6297.50,$5725.00
+Goodman 3 Ton Full Modulating Heat Pump System 17.5 SEER2 21" Wide R-32,"GZV7SA3610, AHVE42CP1300, GTST-CW-WH-A",$7210.50,$6555.00
+Goodman 3.5 Ton Full Modulating Heat Pump System 17.5 SEER2 24" Wide R-32,"GZV7SA4210, AHVE60DP1300, GTST-CW-WH-A",$7551.50,$6865.00
+Goodman 4 Ton Full Modulating Heat Pump System 17.5 SEER2 24" Wide R-32,"GZV7SA4810, AHVE60DP1300, GTST-CW-WH-A",$7924.40,$7204.00
+Goodman 5 Ton Full Modulating Heat Pump System 17.5 SEER2 24" Wide R-32,"GZV7SA6010, AHVE60DP1300, GTST-CW-WH-A",$9741.60,$8856.00
+Goodman 2 Ton Modulating Upflow 80% Gas Variable Speed System 17.5 SEER2 17" Wide R-32,"GSZV7SA2410, CAPEA3026B3, GRVT800603BN, GTST-CW-WH-A",$6908.00,$6280.00
+Goodman 3 Ton Modulating Upflow 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA3610, CAPEA4830C3, GRVT800804CN, GTST-CW-WH-A",$8192.80,$7448.00
+Goodman 3.5 Ton Modulating Upflow 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA4210, CAPEA6030C3, GRVT800804CN, GTST-CW-WH-A",$8416.10,$7651.00
+Goodman 4 Ton Modulating Upflow 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA4810, CAPEA6030C3, GRVT800804CN, GTST-CW-WH-A",$8789.00,$7990.00
+Goodman 5 Ton Modulating Upflow 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA6010, CAPEA6030C3, GRVT800805CN, GTST-CW-WH-A",$10666.70,$9697.00
+Goodman 2 Ton Modulating Horizontal 80% Gas Variable Speed System 17.5 SEER2 17" Wide R-32,"GSZV7SA2410, CHPEA3626B3, GRVT800603BN, GTST-CW-WH-A",$6771.60,$6156.00
+Goodman 3 Ton Modulating Horizontal 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA3610, CHPEA4830C3, GRVT800804CN, GTST-CW-WH-A",$8090.50,$7355.00
+Goodman 3.5 Ton Modulating Horizontal 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA4210, CHPEA6030C3, GRVT800804CN, GTST-CW-WH-A",$8298.40,$7544.00
+Goodman 4 Ton Modulating Horizontal 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA4810, CHPEA6030C3, GRVT800804CN, GTST-CW-WH-A",$8671.30,$7883.00
+Goodman 5 Ton Modulating Horizontal 80% Gas Variable Speed System 17.5 SEER2 21" Wide R-32,"GSZV7SA6010, CHPEA6030C3, GRVT800805CN, GTST-CW-WH-A",$10549.00,$9590.00
+Goodman 2 Ton Modulating Upflow 96% Variable Speed Gas System 17.5 SEER2 17" Wide R-32,"GSZV7SA2410, CAPEA3026B3, GRVT960403BN, GTST-CW-WH-A",$7293.00,$6630.00
+Goodman 3 Ton Modulating Upflow 96% Variable Speed Gas System 17.5 SEER2 21" Wide R-32,"GSZV7SA3610, CAPEA4830C3, GRVT960804CN, GTST-CW-WH-A",$8930.90,$8119.00
+Goodman 3.5 Ton Modulating Upflow 96% Variable Speed Gas System 17.5 SEER2 21" Wide R-32,"GSZV7SA4210, CAPEA6030C3, GRVT960804CN, GTST-CW-WH-A",$9154.20,$8322.00
+Goodman 4 Ton Modulating Upflow 96% Variable Speed Gas System 17.5 SEER2 21" Wide R-32,"GSZV7SA4810, CAPEA6030C3, GRVT960804CN, GTST-CW-WH-A",$9527.10,$8661.00
+Goodman 5 Ton Modulating Upflow 96% Variable Speed Gas System 17.5 SEER2 21" Wide R-32,"GSZV7SA6010, CAPEA6030C3, GRVT961005CN, GTST-CW-WH-A",$11612.70,$10557.00
+Goodman 2 Ton Modulating Horizontal 96% Variable Speed Gas System 17.5 SEER2 17" Wide R-32,"GSZV7SA2410, CHPEA3026B3, GRVT960403BN, GTST-CW-WH-A",$7156.60,$6506.00
+Goodman 3 Ton Modulating Horizontal 96% Variable Speed Gas System 17.5 SEER2 17" Wide R-32,"GSZV7SA3610, CHPEA4830C3, GRVT960804CN, GTST-CW-WH-A",$8828.60,$8026.00
+Goodman 3.5 Ton Modulating Horizontal 96% Variable Speed Gas System 17.5 SEER2 17" Wide R-32,"GSZV7SA4210, CHPEA6030C3, GRVT960804CN, GTST-CW-WH-A",$9036.50,$8215.00
+Goodman 4 Ton Modulating Horizontal 96% Variable Speed Gas System 17.5 SEER2 17" Wide R-33,"GSZV7SA4810, CHPEA6030C3, GRVT960804CN, GTST-CW-WH-A",$9409.40,$8554.00
+Goodman 5 Ton Modulating Horizontal 96% Variable Speed Gas System 17.5 SEER2 17" Wide R-33,"GSZV7SA6010, CHPEA6030C3, GRVT961005CN, GTST-CW-WH-A",$11495.00,$10450.00

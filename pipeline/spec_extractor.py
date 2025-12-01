@@ -50,6 +50,16 @@ class SpecExtractor:
         if spec:
             return spec
 
+        # Map GSZV7SA to GZV7SA specs (17.5 SEER2)
+        if model_number.startswith('GSZV7SA'):
+            replacement = model_number.replace('GSZV7SA', 'GZV7SA')
+            spec = self.specs_data.get(replacement)
+            if spec:
+                # Return a copy with the original model number
+                spec_copy = spec.copy()
+                spec_copy['model_number'] = model_number
+                return spec_copy
+
         # Try with 'A' suffix if not found
         if not model_number.endswith('A'):
             spec = self.specs_data.get(model_number + 'A')

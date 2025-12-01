@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solace 92% AFUE Gas Furnace - S-GR9S920805CN</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #product-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #FFBE00;
+            background: #fff;
+        }
+
+        #product-container h1 {
+            font-size: 2.5em;
+            color: #000000;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #000000;
+            font-weight: 700;
+        }
+
+        #product-container h2 {
+            font-size: 1.8em;
+            color: #000000;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+
+        #product-container h3 {
+            font-size: 1.4em;
+            color: #FFBE00;
+            margin: 25px 0 12px 0;
+            font-weight: 600;
+        }
+
+        #product-container p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #FFBE00;
+        }
+
+        .intro-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid #FFBE00;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .specs-table thead {
+            background: linear-gradient(135deg, #FFBE00 0%, #CC9800 100%);
+            color: white;
+        }
+
+        .specs-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .specs-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .specs-table tbody tr {
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .specs-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .specs-table tbody tr:hover {
+            background: linear-gradient(90deg, #FFBE00 0%, #CC9800 100%) !important;
+            color: white;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(255, 190, 0, 0.3);
+        }
+
+        .specs-table tbody tr:hover td {
+            color: white;
+        }
+
+        .warranty-section {
+            background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
+            padding: 50px 30px;
+            border-radius: 15px;
+            margin: 50px 0;
+        }
+
+        .warranty-section h2 {
+            color: #FFBE00;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+
+        .warranty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .warranty-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid rgba(255, 190, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .warranty-card:hover {
+            background: rgba(255, 190, 0, 0.05);
+            border-color: #FFBE00;
+            transform: translateY(-5px);
+        }
+
+        .warranty-years {
+            font-size: 48px;
+            font-weight: 700;
+            color: #FFBE00;
+        }
+
+        .warranty-label {
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
+            padding: 60px 30px;
+            border-radius: 15px;
+            margin-top: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .cta-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cta-section h2 {
+            color: #FFBE00;
+            margin: 0 0 15px 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            color: #333;
+            margin: 0;
+            font-size: 16px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .compliance-badge {
+            background: rgba(255, 190, 0, 0.05);
+            border: 2px solid #FFBE00;
+            border-radius: 12px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .compliance-badge:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 190, 0, 0.3);
+        }
+
+        .badge-icon {
+            font-size: 32px;
+            color: #FFBE00;
+            font-weight: 700;
+            background: rgba(255, 190, 0, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .badge-content {
+            text-align: left;
+        }
+
+        .badge-content h3 {
+            color: #FFBE00;
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .badge-content p {
+            color: #555;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .tab-container {
+            margin: 30px 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+            border-color: #FFBE00;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #FFBE00 0%, #CC9800 100%);
+            color: white;
+            border-color: #FFBE00;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            #product-container {
+                padding: 15px;
+            }
+
+            #product-container h1 {
+                font-size: 1.8em;
+            }
+
+            #product-container h2 {
+                font-size: 1.4em;
+            }
+
+            .specs-table {
+                font-size: 0.9em;
+            }
+
+            .specs-table th,
+            .specs-table td {
+                padding: 10px;
+            }
+
+            .compliance-badge {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .badge-content {
+                text-align: center;
+            }
+
+            .cta-section {
+                padding: 40px 20px;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="product-container">
+        <h1>Solace 92% AFUE Gas Furnace - S-GR9S920805CN</h1>
+
+        <div class="intro-section">
+            <p>The Solace S-GR9S920805CN is a 92% AFUE-rated gas furnace delivering 73,680 BTU/h of heating output. This reliable heating solution features a Two Stage design and Multi-Speed ECM blower motor for consistent comfort and energy efficiency. Designed for residential applications, this furnace provides dependable heating performance with modern efficiency standards. This unit requires professional installation and may require a compatible evaporator coil (sold separately) for air conditioning applications.</p>
+        </div>
+
+        <h2>Technical Specifications</h2>
+        <table class="specs-table">
+            <thead>
+                <tr>
+                    <th>Specification</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Manufacturer</strong></td>
+                    <td>Solace</td>
+                </tr>
+                <tr>
+                    <td><strong>Model Number</strong></td>
+                    <td>S-GR9S920805CN</td>
+                </tr>
+                <tr>
+                    <td><strong>Product Type</strong></td>
+                    <td>Gas Furnace</td>
+                </tr>
+                <tr>
+                    <td><strong>AFUE Rating</strong></td>
+                    <td>92%</td>
+                </tr>
+                <tr>
+                    <td><strong>Input BTU/h</strong></td>
+                    <td>80,000</td>
+                </tr>
+                <tr>
+                    <td><strong>Output BTU/h</strong></td>
+                    <td>73,680</td>
+                </tr>
+                <tr>
+                    <td><strong>Fuel Type</strong></td>
+                    <td>Natural Gas</td>
+                </tr>
+                <tr>
+                    <td><strong>Heating Stages</strong></td>
+                    <td>Two Stage</td>
+                </tr>
+                <tr>
+                    <td><strong>Blower Motor Type</strong></td>
+                    <td>Multi-Speed ECM</td>
+                </tr>
+                <tr>
+                    <td><strong>Voltage/Phase/Frequency</strong></td>
+                    <td>115/1/60V/1-Ph/60Hz</td>
+                </tr>
+                <tr>
+                    <td><strong>Min Circuit Ampacity</strong></td>
+                    <td>16.7 A</td>
+                </tr>
+                <tr>
+                    <td><strong>Max Overcurrent Protection</strong></td>
+                    <td>25.0 A</td>
+                </tr>
+                <tr>
+                    <td><strong>Dimensions (H×W×D)</strong></td>
+                    <td>17.375" × 21.0" × 19.5"</td>
+                </tr>
+                <tr>
+                    <td><strong>Shipping Weight</strong></td>
+                    <td>140 lbs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warranty-section">
+            <h2>Comprehensive Warranty Protection</h2>
+            <div class="warranty-grid">
+                <div class="warranty-card">
+                    <div class="warranty-years">10</div>
+                    <div class="warranty-label">Year Parts Warranty</div>
+                </div>
+                <div class="warranty-card">
+                    <div class="warranty-years">∞</div>
+                    <div class="warranty-label">Lifetime Heat Exchanger Warranty</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-content">
+                <h2>Professional Installation Required</h2>
+                <p>Certified HVAC technician installation ensures optimal performance, safety compliance, and full warranty protection.</p>
+            </div>
+
+            <div class="compliance-badge">
+                <div class="badge-icon">✓</div>
+                <div class="badge-content">
+                    <h3>DOE Compliant Nationwide</h3>
+                    <p>This equipment meets Department of Energy efficiency requirements for residential HVAC installations across all U.S. climate zones</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

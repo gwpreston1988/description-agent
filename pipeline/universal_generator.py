@@ -24,14 +24,17 @@ class UniversalGenerator:
             seer_rating: SEER rating as string (e.g., "15.2", "13.4")
         """
         self.seer_rating = seer_rating
-        self.seer_float = float(seer_rating)
+        self.seer_float = float(seer_rating) if "_" not in seer_rating else float(seer_rating.split("_")[1])
         self.seer_dir = SEER_DIRS[seer_rating]
 
+        # Detect brand (Solace or Goodman)
+        self.brand = "Solace" if "Solace" in seer_rating else "Goodman"
+
         # Initialize components
-        specs_file = self.seer_dir / "Specs" / f"{seer_rating}_specs.json"
+        specs_file = self.seer_dir / "Specs" / f"{seer_rating.split('_')[-1]}_specs.json"
         self.parser = SKUParser()
         self.extractor = SpecExtractor(str(specs_file))
-        self.html_gen = HTMLGenerator(self.seer_float)
+        self.html_gen = HTMLGenerator(self.seer_float, brand=self.brand)
 
         print(f"\n{'='*80}")
         print(f"Universal Description Generator - SEER {seer_rating}")
@@ -58,16 +61,16 @@ class UniversalGenerator:
 
         if len(models) == 1:
             # Single component
-            return f"Goodman_R-32_{models[0]}.html"
+            return f"{self.brand}_R-32_{models[0]}.html"
 
         elif len(models) == 2:
             # 2-component system
             if 'AC' in system_type and 'AirHandler' in system_type:
-                return f"Goodman_{tonnage}Ton_R-32_AC_System_{'_'.join(models)}.html"
+                return f"{self.brand}_{tonnage}Ton_R-32_AC_System_{'_'.join(models)}.html"
             elif 'HP' in system_type and 'AirHandler' in system_type:
-                return f"Goodman_{tonnage}Ton_R-32_HP_System_{'_'.join(models)}.html"
+                return f"{self.brand}_{tonnage}Ton_R-32_HP_System_{'_'.join(models)}.html"
             else:
-                return f"Goodman_R-32_System_{'_'.join(models)}.html"
+                return f"{self.brand}_R-32_System_{'_'.join(models)}.html"
 
         else:
             # 3-component system (Condenser/HP + Furnace + Coil)
@@ -90,10 +93,10 @@ class UniversalGenerator:
 
             if 'DualFuel' in system_type or 'HP' in system_type:
                 # Dual fuel (HP + Furnace + Coil)
-                return f"Goodman_R-32_DualFuel_{afue}_{orientation}_System_{'_'.join(models)}.html"
+                return f"{self.brand}_R-32_DualFuel_{afue}_{orientation}_System_{'_'.join(models)}.html"
             else:
                 # AC + Furnace + Coil
-                return f"Goodman_R-32_AC_{afue}_{orientation}_System_{'_'.join(models)}.html"
+                return f"{self.brand}_R-32_AC_{afue}_{orientation}_System_{'_'.join(models)}.html"
 
     def generate_description(self, sku_data: Dict, output_dir: Path) -> bool:
         """

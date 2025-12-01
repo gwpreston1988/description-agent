@@ -11,14 +11,34 @@ from typing import Dict, List, Optional
 class HTMLGenerator:
     """Generate complete HTML programmatically based on system type"""
 
-    def __init__(self, seer_rating: float):
+    def __init__(self, seer_rating: float, brand: str = "Goodman"):
         """
-        Initialize generator with SEER rating
+        Initialize generator with SEER rating and brand
 
         Args:
             seer_rating: SEER2 rating (e.g., 13.4, 14.3, 15.2, 16.2, 17.2, 17.5)
+            brand: Brand name (Goodman or Solace)
         """
         self.seer_rating = seer_rating
+        self.brand = brand
+
+        # Set brand-specific colors
+        if brand == "Solace":
+            self.heading_color = "#000000"  # Black for H1/H2
+            self.primary_color = "#FFBE00"  # Gold/Yellow for accents
+            self.primary_dark = "#CC9800"  # Darker gold for gradients
+            self.secondary_color = "#FFBE00"  # Gold/Yellow
+            self.text_color = "#FFBE00"  # Gold/Yellow for body text
+            self.accent_light = "rgba(255, 190, 0, 0.05)"  # Light yellow tint
+            self.accent_border = "rgba(255, 190, 0, 0.3)"  # Yellow border
+        else:
+            self.heading_color = "#D53938"  # Red for H1/H2
+            self.primary_color = "#D53938"  # Red
+            self.primary_dark = "#b32d2c"  # Darker red for gradients
+            self.secondary_color = "#57A9F9"  # Blue
+            self.text_color = "#333"  # Dark gray
+            self.accent_light = "rgba(213, 57, 56, 0.05)"  # Light red tint
+            self.accent_border = "rgba(213, 57, 56, 0.3)"  # Red border
 
     def get_doe_footer(self) -> tuple[str, str]:
         """
@@ -27,16 +47,30 @@ class HTMLGenerator:
         Returns:
             Tuple of (title, description)
         """
-        if self.seer_rating < 14.3:
-            return (
-                "DOE Compliant for Northern Regions Only",
-                f"This {self.seer_rating} SEER2 equipment meets Department of Energy efficiency requirements for residential HVAC installations in northern U.S. climate zones only"
-            )
+        # For Solace, remove SEER references
+        if self.brand == "Solace":
+            if self.seer_rating < 14.3:
+                return (
+                    "DOE Compliant for Northern Regions Only",
+                    "This equipment meets Department of Energy efficiency requirements for residential HVAC installations in northern U.S. climate zones only"
+                )
+            else:
+                return (
+                    "DOE Compliant Nationwide",
+                    "This equipment meets Department of Energy efficiency requirements for residential HVAC installations across all U.S. climate zones"
+                )
         else:
-            return (
-                "DOE Compliant Nationwide",
-                f"This {self.seer_rating} SEER2 equipment meets Department of Energy efficiency requirements for residential HVAC installations across all U.S. climate zones"
-            )
+            # Goodman keeps SEER references
+            if self.seer_rating < 14.3:
+                return (
+                    "DOE Compliant for Northern Regions Only",
+                    f"This {self.seer_rating} SEER2 equipment meets Department of Energy efficiency requirements for residential HVAC installations in northern U.S. climate zones only"
+                )
+            else:
+                return (
+                    "DOE Compliant Nationwide",
+                    f"This {self.seer_rating} SEER2 equipment meets Department of Energy efficiency requirements for residential HVAC installations across all U.S. climate zones"
+                )
 
     @staticmethod
     def format_tonnage(tonnage: float) -> str:
@@ -58,178 +92,267 @@ class HTMLGenerator:
         }
         return conversions.get(str(size_str), str(size_str) + '"')
 
+    def get_thermostat_tab(self, tab_id: str = 'thermostat-specs') -> str:
+        """
+        Generate thermostat tab content for 17.5 SEER2 systems
+
+        Args:
+            tab_id: HTML ID for the tab content div
+
+        Returns:
+            HTML string for thermostat specifications tab
+        """
+        return f"""
+            <div id="{tab_id}" class="tab-content">
+                <h3>Smart Thermostat — GTST-CW-WH-A Specifications</h3>
+                <table class="specs-table">
+                    <thead>
+                        <tr>
+                            <th>Specification</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Manufacturer</strong></td>
+                            <td>{self.brand}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Model Number</strong></td>
+                            <td>GTST-CW-WH-A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Product Type</strong></td>
+                            <td>WiFi Smart Thermostat</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Control Type</strong></td>
+                            <td>ComfortNet™ Communicating</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Display</strong></td>
+                            <td>Full-Color Touchscreen</td>
+                        </tr>
+                        <tr>
+                            <td><strong>WiFi Connectivity</strong></td>
+                            <td>Built-in 2.4 GHz WiFi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mobile App</strong></td>
+                            <td>iOS and Android Compatible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Voice Control</strong></td>
+                            <td>Amazon Alexa & Google Assistant</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scheduling</strong></td>
+                            <td>7-Day Programmable</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Geofencing</strong></td>
+                            <td>Smartphone Location-Based Control</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Smart Features</strong></td>
+                            <td>Weather Alerts, System Diagnostics, Energy Reports</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Power</strong></td>
+                            <td>C-Wire Required (24VAC)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temperature Range</strong></td>
+                            <td>40°F - 99°F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Humidity Display</strong></td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Filter Reminders</strong></td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Color</strong></td>
+                            <td>White</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>"""
+
     def get_common_styles(self) -> str:
         """Get common CSS styles used in all descriptions"""
         return """
-        * {
+        * {{
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
+        }}
 
-        #product-container {
+        #product-container {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            color: #000;
+            color: {text_color};
             background: #fff;
-        }
+        }}
 
-        #product-container h1 {
+        #product-container h1 {{
             font-size: 2.5em;
-            color: #D53938;
+            color: {heading_color};
             margin-bottom: 10px;
             padding-bottom: 15px;
-            border-bottom: 3px solid #D53938;
+            border-bottom: 3px solid {heading_color};
             font-weight: 700;
-        }
+        }}
 
-        #product-container h2 {
+        #product-container h2 {{
             font-size: 1.8em;
-            color: #D53938;
+            color: {heading_color};
             margin: 30px 0 15px 0;
             font-weight: 600;
-        }
+        }}
 
-        #product-container h3 {
+        #product-container h3 {{
             font-size: 1.4em;
-            color: #57A9F9;
+            color: {secondary_color};
             margin: 25px 0 12px 0;
             font-weight: 600;
-        }
+        }}
 
-        #product-container p {
+        #product-container p {{
             line-height: 1.8;
             margin-bottom: 15px;
             font-size: 1.05em;
-            color: #333;
-        }
+            color: {text_color};
+        }}
 
-        .intro-section {
+        .intro-section {{
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 25px;
             border-radius: 8px;
             margin: 25px 0;
-            border-left: 5px solid #D53938;
-        }
+            border-left: 5px solid {primary_color};
+        }}
 
-        .specs-table {
+        .specs-table {{
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border-radius: 8px;
             overflow: hidden;
-        }
+        }}
 
-        .specs-table thead {
-            background: linear-gradient(135deg, #D53938 0%, #b32d2c 100%);
+        .specs-table thead {{
+            background: linear-gradient(135deg, {primary_color} 0%, {primary_dark} 100%);
             color: white;
-        }
+        }}
 
-        .specs-table th {
+        .specs-table th {{
             padding: 15px;
             text-align: left;
             font-weight: 600;
             font-size: 1.1em;
-        }
+        }}
 
-        .specs-table td {
+        .specs-table td {{
             padding: 12px 15px;
             border-bottom: 1px solid #e0e0e0;
-        }
+        }}
 
-        .specs-table tbody tr {
+        .specs-table tbody tr {{
             background: #fff;
             transition: all 0.3s ease;
-        }
+        }}
 
-        .specs-table tbody tr:nth-child(even) {
+        .specs-table tbody tr:nth-child(even) {{
             background: #f8f9fa;
-        }
+        }}
 
-        .specs-table tbody tr:hover {
-            background: linear-gradient(90deg, #D53938 0%, #b32d2c 100%) !important;
+        .specs-table tbody tr:hover {{
+            background: linear-gradient(90deg, {primary_color} 0%, {primary_dark} 100%) !important;
             color: white;
             transform: scale(1.01);
-            box-shadow: 0 4px 12px rgba(213, 57, 56, 0.3);
-        }
+            box-shadow: 0 4px 12px {accent_border};
+        }}
 
-        .specs-table tbody tr:hover td {
+        .specs-table tbody tr:hover td {{
             color: white;
-        }
+        }}
 
-        .warranty-section {
+        .warranty-section {{
             background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
             padding: 50px 30px;
             border-radius: 15px;
             margin: 50px 0;
-        }
+        }}
 
-        .warranty-section h2 {
-            color: #D53938;
+        .warranty-section h2 {{
+            color: {primary_color};
             text-align: center;
             margin-bottom: 40px;
             font-size: 28px;
-        }
+        }}
 
-        .warranty-grid {
+        .warranty-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 30px;
             max-width: 800px;
             margin: 0 auto;
-        }
+        }}
 
-        .warranty-card {
+        .warranty-card {{
             background: white;
             padding: 30px;
             border-radius: 12px;
             text-align: center;
-            border: 2px solid rgba(213,57,56,0.3);
+            border: 2px solid {accent_border};
             transition: all 0.3s ease;
-        }
+        }}
 
-        .warranty-card:hover {
-            background: rgba(213,57,56,0.05);
-            border-color: #D53938;
+        .warranty-card:hover {{
+            background: {accent_light};
+            border-color: {primary_color};
             transform: translateY(-5px);
-        }
+        }}
 
-        .warranty-years {
+        .warranty-years {{
             font-size: 48px;
             font-weight: 700;
-            color: #D53938;
-        }
+            color: {primary_color};
+        }}
 
-        .warranty-label {
+        .warranty-label {{
             color: #333;
             font-size: 14px;
             font-weight: 600;
-        }
+        }}
 
-        .cta-section {
+        .cta-section {{
             background: linear-gradient(135deg, #F8F9FA 0%, #e9ecef 100%);
             padding: 60px 30px;
             border-radius: 15px;
             margin-top: 50px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
+        }}
 
-        .cta-content {
+        .cta-content {{
             text-align: center;
             margin-bottom: 40px;
-        }
+        }}
 
-        .cta-section h2 {
-            color: #D53938;
+        .cta-section h2 {{
+            color: {primary_color};
             margin: 0 0 15px 0;
             font-size: 28px;
             font-weight: 700;
-        }
+        }}
 
-        .cta-section p {
+        .cta-section p {{
             color: #333;
             margin: 0;
             font-size: 16px;
@@ -237,11 +360,11 @@ class HTMLGenerator:
             margin-left: auto;
             margin-right: auto;
             line-height: 1.6;
-        }
+        }}
 
-        .compliance-badge {
-            background: rgba(213,57,56,0.05);
-            border: 2px solid #D53938;
+        .compliance-badge {{
+            background: {accent_light};
+            border: 2px solid {primary_color};
             border-radius: 12px;
             padding: 25px 30px;
             display: flex;
@@ -250,19 +373,19 @@ class HTMLGenerator:
             max-width: 700px;
             margin: 0 auto;
             transition: all 0.3s ease;
-        }
+        }}
 
-        .compliance-badge:hover {
-            background: rgba(87,169,249,0.05);
+        .compliance-badge:hover {{
+            background: #f8f9fa;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(213,57,56,0.2);
-        }
+            box-shadow: 0 8px 20px {accent_border};
+        }}
 
-        .badge-icon {
+        .badge-icon {{
             font-size: 32px;
-            color: #D53938;
+            color: {primary_color};
             font-weight: 700;
-            background: rgba(213,57,56,0.2);
+            background: {accent_border};
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -270,38 +393,38 @@ class HTMLGenerator:
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-        }
+        }}
 
-        .badge-content {
+        .badge-content {{
             text-align: left;
-        }
+        }}
 
-        .badge-content h3 {
-            color: #D53938;
+        .badge-content h3 {{
+            color: {primary_color};
             margin: 0 0 8px 0;
             font-size: 18px;
             font-weight: 700;
-        }
+        }}
 
-        .badge-content p {
+        .badge-content p {{
             color: #555;
             margin: 0;
             font-size: 14px;
             line-height: 1.5;
-        }
+        }}
 
-        .tab-container {
+        .tab-container {{
             margin: 30px 0;
-        }
+        }}
 
-        .tab-buttons {
+        .tab-buttons {{
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
-        }
+        }}
 
-        .tab-button {
+        .tab-button {{
             padding: 12px 24px;
             background: #f8f9fa;
             border: 2px solid #ddd;
@@ -311,72 +434,80 @@ class HTMLGenerator:
             font-weight: 600;
             color: #333;
             transition: all 0.3s ease;
-        }
+        }}
 
-        .tab-button:hover {
+        .tab-button:hover {{
             background: #e9ecef;
-            border-color: #57A9F9;
-        }
+            border-color: {secondary_color};
+        }}
 
-        .tab-button.active {
-            background: linear-gradient(135deg, #D53938 0%, #b32d2c 100%);
+        .tab-button.active {{
+            background: linear-gradient(135deg, {primary_color} 0%, {primary_dark} 100%);
             color: white;
-            border-color: #D53938;
-        }
+            border-color: {primary_color};
+        }}
 
-        .tab-content {
+        .tab-content {{
             display: none;
-        }
+        }}
 
-        .tab-content.active {
+        .tab-content.active {{
             display: block;
-        }
+        }}
 
-        @media (max-width: 768px) {
-            #product-container {
+        @media (max-width: 768px) {{
+            #product-container {{
                 padding: 15px;
-            }
+            }}
 
-            #product-container h1 {
+            #product-container h1 {{
                 font-size: 1.8em;
-            }
+            }}
 
-            #product-container h2 {
+            #product-container h2 {{
                 font-size: 1.4em;
-            }
+            }}
 
-            .specs-table {
+            .specs-table {{
                 font-size: 0.9em;
-            }
+            }}
 
             .specs-table th,
-            .specs-table td {
+            .specs-table td {{
                 padding: 10px;
-            }
+            }}
 
-            .compliance-badge {
+            .compliance-badge {{
                 flex-direction: column;
                 text-align: center;
                 padding: 20px;
-            }
+            }}
 
-            .badge-content {
+            .badge-content {{
                 text-align: center;
-            }
+            }}
 
-            .cta-section {
+            .cta-section {{
                 padding: 40px 20px;
-            }
+            }}
 
-            .tab-buttons {
+            .tab-buttons {{
                 flex-direction: column;
-            }
+            }}
 
-            .tab-button {
+            .tab-button {{
                 width: 100%;
-            }
-        }
-    """
+            }}
+        }}
+    """.format(
+            heading_color=self.heading_color,
+            primary_color=self.primary_color,
+            primary_dark=self.primary_dark,
+            secondary_color=self.secondary_color,
+            text_color=self.text_color,
+            accent_light=self.accent_light,
+            accent_border=self.accent_border
+        )
 
     def get_javascript(self) -> str:
         """Get common JavaScript for tab functionality"""
@@ -407,6 +538,11 @@ class HTMLGenerator:
         liquid_line = self.format_line_size(str(ac_spec['liquid_line_od_in']))
         suction_line = self.format_line_size(str(ac_spec['suction_line_od_in']))
 
+        # Detect if wall-mounted air handler
+        is_wall_mounted = 'AWST' in ah_spec['model_number'].upper()
+        ah_type = "Wall-Mounted Air Handler" if is_wall_mounted else "Multi-Positional Air Handler"
+        ah_type_desc = "space-saving wall-mounted" if is_wall_mounted else "versatile multi-positional"
+
         doe_title, doe_desc = self.get_doe_footer()
 
         html = f"""<!DOCTYPE html>
@@ -414,17 +550,17 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Air Conditioning System with Multi-Positional Air Handler</title>
+    <title>{self.brand.upper()} {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Air Conditioning System with {ah_type}</title>
     <style>
         {self.get_common_styles()}
     </style>
 </head>
 <body>
     <div id="product-container">
-        <h1>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Air Conditioning System with Multi-Positional Air Handler</h1>
+        <h1>{self.brand.upper()} {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Air Conditioning System with {ah_type}</h1>
 
         <div class="intro-section">
-            <p>Experience premium cooling comfort with this Goodman {tonnage_display}-ton {self.seer_rating} SEER2 air conditioning system. This complete matched system combines a high-efficiency air conditioner outdoor unit with a versatile multi-positional air handler. Designed for reliable cooling performance, this system delivers exceptional energy efficiency, quiet operation, and dependable comfort with R-32 refrigerant.</p>
+            <p>Experience premium cooling comfort with this {self.brand} {tonnage_display}-ton {self.seer_rating} SEER2 air conditioning system. This complete matched system combines a high-efficiency air conditioner outdoor unit with a {ah_type_desc} air handler. Designed for reliable cooling performance, this system delivers exceptional energy efficiency, quiet operation, and dependable comfort with R-32 refrigerant.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -447,7 +583,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Tonnage</strong></td>
@@ -529,7 +665,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Tonnage</strong></td>
@@ -541,7 +677,7 @@ class HTMLGenerator:
                         </tr>
                         <tr>
                             <td><strong>Product Type</strong></td>
-                            <td>Multi-Positional Air Handler</td>
+                            <td>{ah_type}</td>
                         </tr>
                         <tr>
                             <td><strong>Motor Type</strong></td>
@@ -550,10 +686,6 @@ class HTMLGenerator:
                         <tr>
                             <td><strong>Nominal Cooling Capacity</strong></td>
                             <td>{ac_spec['cooling_capacity_btuh']:,} BTU/h</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Airflow</strong></td>
-                            <td>{ah_spec.get('airflow_cfm') or 'N/A'} CFM</td>
                         </tr>
                         <tr>
                             <td><strong>Voltage</strong></td>
@@ -581,7 +713,7 @@ class HTMLGenerator:
                         </tr>
                         <tr>
                             <td><strong>Cabinet Configuration</strong></td>
-                            <td>Multi-Positional (B Cabinet)</td>
+                            <td>{"Wall-Mounted" if is_wall_mounted else "Multi-Positional (B Cabinet)"}</td>
                         </tr>
                         <tr>
                             <td><strong>Dimensions (H×W×D)</strong></td>
@@ -638,6 +770,11 @@ class HTMLGenerator:
         liquid_line = self.format_line_size(str(hp_spec['liquid_line_od_in']))
         suction_line = self.format_line_size(str(hp_spec['suction_line_od_in']))
 
+        # Detect if wall-mounted air handler
+        is_wall_mounted = 'AWST' in ah_spec['model_number'].upper()
+        ah_type = "Wall-Mounted Air Handler" if is_wall_mounted else "Multi-Positional Air Handler"
+        ah_type_desc = "space-saving wall-mounted" if is_wall_mounted else "versatile multi-positional"
+
         doe_title, doe_desc = self.get_doe_footer()
 
         html = f"""<!DOCTYPE html>
@@ -645,17 +782,17 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Heat Pump System with Multi-Positional Air Handler</title>
+    <title>{self.brand.upper()} {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {'Variable Capacity ' if self.seer_rating == 17.5 else ''}Heat Pump System with {'ComfortNet ' if self.seer_rating == 17.5 else ''}{ah_type}{' and Smart Thermostat' if self.seer_rating == 17.5 else ''}</title>
     <style>
         {self.get_common_styles()}
     </style>
 </head>
 <body>
     <div id="product-container">
-        <h1>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Heat Pump System with Multi-Positional Air Handler</h1>
+        <h1>{self.brand.upper()} {tonnage_display} Ton {self.seer_rating} SEER2 R-32 Heat Pump System with {ah_type}</h1>
 
         <div class="intro-section">
-            <p>Experience year-round comfort with this premium Goodman {tonnage_display}-ton {self.seer_rating} SEER2 heat pump system. This complete matched system combines a high-efficiency heat pump outdoor unit with a versatile multi-positional air handler. Designed for reliable heating and cooling performance, this system delivers exceptional energy efficiency, quiet operation, and dependable comfort with R-32 refrigerant.</p>
+            <p>Experience year-round comfort with this premium {self.brand} {tonnage_display}-ton {self.seer_rating} SEER2 heat pump system. This complete matched system combines a high-efficiency heat pump outdoor unit with a {ah_type_desc} air handler. Designed for reliable heating and cooling performance, this system delivers exceptional energy efficiency, quiet operation, and dependable comfort with R-32 refrigerant.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -664,6 +801,7 @@ class HTMLGenerator:
             <div class="tab-buttons">
                 <button class="tab-button active" onclick="showTab(event, 'hp-specs')">Heat Pump</button>
                 <button class="tab-button" onclick="showTab(event, 'airhandler-specs')">Air Handler</button>
+                {'<button class="tab-button" onclick="showTab(event, \'thermostat-specs\')">Smart Thermostat</button>' if self.seer_rating == 17.5 else ''}
             </div>
 
             <div id="hp-specs" class="tab-content active">
@@ -678,7 +816,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Tonnage</strong></td>
@@ -764,7 +902,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Tonnage</strong></td>
@@ -776,7 +914,7 @@ class HTMLGenerator:
                         </tr>
                         <tr>
                             <td><strong>Product Type</strong></td>
-                            <td>Multi-Positional Air Handler</td>
+                            <td>{ah_type}</td>
                         </tr>
                         <tr>
                             <td><strong>Motor Type</strong></td>
@@ -785,10 +923,6 @@ class HTMLGenerator:
                         <tr>
                             <td><strong>Nominal Cooling Capacity</strong></td>
                             <td>{hp_spec['cooling_capacity_btuh']:,} BTU/h</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Airflow</strong></td>
-                            <td>{ah_spec.get('airflow_cfm') or 'N/A'} CFM</td>
                         </tr>
                         <tr>
                             <td><strong>Voltage</strong></td>
@@ -816,7 +950,7 @@ class HTMLGenerator:
                         </tr>
                         <tr>
                             <td><strong>Cabinet Configuration</strong></td>
-                            <td>Multi-Positional (B Cabinet)</td>
+                            <td>{"Wall-Mounted" if is_wall_mounted else "Multi-Positional (B Cabinet)"}</td>
                         </tr>
                         <tr>
                             <td><strong>Dimensions (H×W×D)</strong></td>
@@ -829,6 +963,8 @@ class HTMLGenerator:
                     </tbody>
                 </table>
             </div>
+
+            {self.get_thermostat_tab() if self.seer_rating == 17.5 else ''}
         </div>
 
         <div class="warranty-section">
@@ -885,17 +1021,17 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {afue}% AFUE Gas Furnace Air Conditioning System ({orientation} Coil)</title>
+    <title>{self.brand.upper()} {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {afue}% AFUE Gas Furnace Air Conditioning System ({orientation} Coil)</title>
     <style>
         {self.get_common_styles()}
     </style>
 </head>
 <body>
     <div id="product-container">
-        <h1>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {afue}% AFUE Gas Furnace Air Conditioning System ({orientation} Coil)</h1>
+        <h1>{self.brand.upper()} {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {afue}% AFUE Gas Furnace Air Conditioning System ({orientation} Coil)</h1>
 
         <div class="intro-section">
-            <p>Experience reliable home comfort with this complete Goodman {tonnage_display}-ton HVAC system ({orientation} Coil). This matched system combines a high-efficiency {self.seer_rating} SEER2 air conditioner, a {afue}% AFUE single-stage gas furnace with multi-speed ECM blower, and a precision-engineered {orientation.lower()} evaporator coil with factory-installed TXV. Designed for dependable year-round heating and cooling performance, this system delivers excellent energy efficiency, quiet operation, and proven reliability with environmentally-friendly R-32 refrigerant.</p>
+            <p>Experience reliable home comfort with this complete {self.brand} {tonnage_display}-ton HVAC system ({orientation} Coil). This matched system combines a high-efficiency {self.seer_rating} SEER2 air conditioner, a {afue}% AFUE single-stage gas furnace with multi-speed ECM blower, and a precision-engineered {orientation.lower()} evaporator coil with factory-installed TXV. Designed for dependable year-round heating and cooling performance, this system delivers excellent energy efficiency, quiet operation, and proven reliability with environmentally-friendly R-32 refrigerant.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -919,7 +1055,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Model Number</strong></td>
@@ -1001,7 +1137,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Model Number</strong></td>
@@ -1071,7 +1207,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Model Number</strong></td>
@@ -1191,17 +1327,17 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {afue}% AFUE Dual Fuel System ({orientation} Coil)</title>
+    <title>{self.brand.upper()} {tonnage_display} Ton {'Variable Capacity ' if self.seer_rating == 17.5 else ''}{self.seer_rating} SEER2 R-32 {afue}% AFUE Dual Fuel System {'with ComfortNet Smart Thermostat ' if self.seer_rating == 17.5 else ''}({orientation} Coil)</title>
     <style>
         {self.get_common_styles()}
     </style>
 </head>
 <body>
     <div id="product-container">
-        <h1>GOODMAN {tonnage_display} Ton {self.seer_rating} SEER2 R-32 {afue}% AFUE Dual Fuel System ({orientation} Coil)</h1>
+        <h1>{self.brand.upper()} {tonnage_display} Ton {'Variable Capacity ' if self.seer_rating == 17.5 else ''}{self.seer_rating} SEER2 R-32 {afue}% AFUE Dual Fuel System {'with ComfortNet Smart Thermostat ' if self.seer_rating == 17.5 else ''}({orientation} Coil)</h1>
 
         <div class="intro-section">
-            <p>Experience ultimate year-round comfort with this complete Goodman {tonnage_display}-ton dual fuel HVAC system ({orientation} Coil). This advanced matched system combines a high-efficiency {self.seer_rating} SEER2 heat pump, a {afue}% AFUE single-stage gas furnace with multi-speed ECM blower, and a precision-engineered {orientation.lower()} evaporator coil with factory-installed TXV. The dual fuel configuration automatically switches between electric heat pump and gas furnace operation to optimize efficiency and comfort. Designed for exceptional year-round heating and cooling performance, this system delivers outstanding energy efficiency, quiet operation, and proven reliability with environmentally-friendly R-32 refrigerant.</p>
+            <p>Experience ultimate year-round comfort with this complete {self.brand} {tonnage_display}-ton dual fuel HVAC system ({orientation} Coil). This advanced matched system combines a high-efficiency {'variable capacity ' if self.seer_rating == 17.5 else ''}{self.seer_rating} SEER2 heat pump, a {afue}% AFUE {'variable speed ' if self.seer_rating == 17.5 else 'single-stage '}gas furnace with {'variable speed ' if self.seer_rating == 17.5 else 'multi-speed '}ECM blower, and a precision-engineered {orientation.lower()} evaporator coil with factory-installed {'EEV' if self.seer_rating == 17.5 else 'TXV'}. {'Featuring the GTST-CW-WH-A smart WiFi thermostat with ComfortNet communicating controls, this system offers seamless integration with voice assistants and mobile app control for ultimate convenience. ' if self.seer_rating == 17.5 else ''}The dual fuel configuration automatically switches between electric heat pump and gas furnace operation to optimize efficiency and comfort. Designed for exceptional year-round heating and cooling performance, this system delivers outstanding energy efficiency, quiet operation, and proven reliability with environmentally-friendly R-32 refrigerant.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -1211,6 +1347,7 @@ class HTMLGenerator:
                 <button class="tab-button active" onclick="showTab(event, 'hp-specs')">Heat Pump</button>
                 <button class="tab-button" onclick="showTab(event, 'furnace-specs')">Gas Furnace</button>
                 <button class="tab-button" onclick="showTab(event, 'coil-specs')">Evaporator Coil</button>
+                {'<button class="tab-button" onclick="showTab(event, \'thermostat-specs\')">Smart Thermostat</button>' if self.seer_rating == 17.5 else ''}
             </div>
 
             <div id="hp-specs" class="tab-content active">
@@ -1225,7 +1362,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Model Number</strong></td>
@@ -1311,7 +1448,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Model Number</strong></td>
@@ -1381,7 +1518,7 @@ class HTMLGenerator:
                     <tbody>
                         <tr>
                             <td><strong>Manufacturer</strong></td>
-                            <td>Goodman</td>
+                            <td>{self.brand}</td>
                         </tr>
                         <tr>
                             <td><strong>Model Number</strong></td>
@@ -1422,6 +1559,8 @@ class HTMLGenerator:
                     </tbody>
                 </table>
             </div>
+
+            {self.get_thermostat_tab() if self.seer_rating == 17.5 else ''}
         </div>
 
         <div class="warranty-section">
@@ -1494,15 +1633,15 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goodman {tonnage_str} Ton R-32 Air Conditioner Condenser - {ac_spec['model_number']}</title>
+    <title>{self.brand} {tonnage_str} Ton R-32 Air Conditioner Condenser - {ac_spec['model_number']}</title>
     <style>{self.get_common_styles()}</style>
 </head>
 <body>
     <div id="product-container">
-        <h1>Goodman {tonnage_str} Ton R-32 Air Conditioner Condenser - {ac_spec['model_number']}</h1>
+        <h1>{self.brand} {tonnage_str} Ton R-32 Air Conditioner Condenser - {ac_spec['model_number']}</h1>
 
         <div class="intro-section">
-            <p>The Goodman {ac_spec['model_number']} is a high-efficiency {tonnage_str}-ton air conditioning condenser unit rated at {self.seer_rating} SEER2. This outdoor unit uses eco-friendly R-32 refrigerant and features a reliable {ac_spec.get('compressor_type', 'scroll').lower()} compressor for quiet, efficient cooling. Designed for residential applications, it provides consistent comfort while meeting modern energy efficiency standards. This condenser requires a compatible indoor evaporator coil or air handler (sold separately) to complete your cooling system.</p>
+            <p>The {self.brand} {ac_spec['model_number']} is a high-efficiency {tonnage_str}-ton air conditioning condenser unit rated at {self.seer_rating} SEER2. This outdoor unit uses eco-friendly R-32 refrigerant and features a reliable {ac_spec.get('compressor_type', 'scroll').lower()} compressor for quiet, efficient cooling. Designed for residential applications, it provides consistent comfort while meeting modern energy efficiency standards. This condenser requires a compatible indoor evaporator coil or air handler (sold separately) to complete your cooling system.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -1516,7 +1655,7 @@ class HTMLGenerator:
             <tbody>
                 <tr>
                     <td><strong>Manufacturer</strong></td>
-                    <td>Goodman</td>
+                    <td>{self.brand}</td>
                 </tr>
                 <tr>
                     <td><strong>Model Number</strong></td>
@@ -1630,15 +1769,15 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goodman {tonnage_str} Ton R-32 Heat Pump Condenser - {hp_spec['model_number']}</title>
+    <title>{self.brand} {tonnage_str} Ton R-32 Heat Pump Condenser - {hp_spec['model_number']}</title>
     <style>{self.get_common_styles()}</style>
 </head>
 <body>
     <div id="product-container">
-        <h1>Goodman {tonnage_str} Ton R-32 Heat Pump Condenser - {hp_spec['model_number']}</h1>
+        <h1>{self.brand} {tonnage_str} Ton R-32 Heat Pump Condenser - {hp_spec['model_number']}</h1>
 
         <div class="intro-section">
-            <p>The Goodman {hp_spec['model_number']} is a high-efficiency {tonnage_str}-ton heat pump outdoor unit rated at {self.seer_rating} SEER2. This versatile system uses eco-friendly R-32 refrigerant and provides both heating and cooling capabilities with a reliable {hp_spec.get('compressor_type', 'scroll').lower()} compressor. Designed for year-round comfort in moderate climates, it delivers efficient operation while meeting modern energy efficiency standards. This heat pump requires a compatible indoor evaporator coil or air handler (sold separately) to complete your system.</p>
+            <p>The {self.brand} {hp_spec['model_number']} is a high-efficiency {tonnage_str}-ton heat pump outdoor unit rated at {self.seer_rating} SEER2. This versatile system uses eco-friendly R-32 refrigerant and provides both heating and cooling capabilities with a reliable {hp_spec.get('compressor_type', 'scroll').lower()} compressor. Designed for year-round comfort in moderate climates, it delivers efficient operation while meeting modern energy efficiency standards. This heat pump requires a compatible indoor evaporator coil or air handler (sold separately) to complete your system.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -1652,7 +1791,7 @@ class HTMLGenerator:
             <tbody>
                 <tr>
                     <td><strong>Manufacturer</strong></td>
-                    <td>Goodman</td>
+                    <td>{self.brand}</td>
                 </tr>
                 <tr>
                     <td><strong>Model Number</strong></td>
@@ -1770,15 +1909,15 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goodman {tonnage_str} Ton R-32 Air Handler - {ah_spec['model_number']}</title>
+    <title>{self.brand} {tonnage_str} Ton R-32 Air Handler - {ah_spec['model_number']}</title>
     <style>{self.get_common_styles()}</style>
 </head>
 <body>
     <div id="product-container">
-        <h1>Goodman {tonnage_str} Ton R-32 Air Handler - {ah_spec['model_number']}</h1>
+        <h1>{self.brand} {tonnage_str} Ton R-32 Air Handler - {ah_spec['model_number']}</h1>
 
         <div class="intro-section">
-            <p>The Goodman {ah_spec['model_number']} is a high-efficiency multi-position air handler designed for use with R-32 refrigerant systems. Featuring an advanced {ah_spec.get('blower_motor_type', 'ECM')} blower motor, this unit delivers precise airflow control and reduced energy consumption. The multi-position cabinet design allows for flexible installation in upflow, downflow, or horizontal configurations. This air handler requires a compatible outdoor condensing unit (sold separately) to complete your heating and cooling system.</p>
+            <p>The {self.brand} {ah_spec['model_number']} is a high-efficiency multi-position air handler designed for use with R-32 refrigerant systems. Featuring an advanced {ah_spec.get('blower_motor_type', 'ECM')} blower motor, this unit delivers precise airflow control and reduced energy consumption. The multi-position cabinet design allows for flexible installation in upflow, downflow, or horizontal configurations. This air handler requires a compatible outdoor condensing unit (sold separately) to complete your heating and cooling system.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -1792,7 +1931,7 @@ class HTMLGenerator:
             <tbody>
                 <tr>
                     <td><strong>Manufacturer</strong></td>
-                    <td>Goodman</td>
+                    <td>{self.brand}</td>
                 </tr>
                 <tr>
                     <td><strong>Model Number</strong></td>
@@ -1805,10 +1944,6 @@ class HTMLGenerator:
                 <tr>
                     <td><strong>Tonnage</strong></td>
                     <td>{tonnage_str} Tons</td>
-                </tr>
-                <tr>
-                    <td><strong>Airflow Capacity</strong></td>
-                    <td>{ah_spec.get('airflow_cfm', 'Varies')} CFM</td>
                 </tr>
                 <tr>
                     <td><strong>Blower Motor Type</strong></td>
@@ -1899,15 +2034,15 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goodman {tonnage_str} Ton R-32 {orientation} Evaporator Coil - {coil_spec['model_number']}</title>
+    <title>{self.brand} {tonnage_str} Ton R-32 {orientation} Evaporator Coil - {coil_spec['model_number']}</title>
     <style>{self.get_common_styles()}</style>
 </head>
 <body>
     <div id="product-container">
-        <h1>Goodman {tonnage_str} Ton R-32 {orientation} Evaporator Coil - {coil_spec['model_number']}</h1>
+        <h1>{self.brand} {tonnage_str} Ton R-32 {orientation} Evaporator Coil - {coil_spec['model_number']}</h1>
 
         <div class="intro-section">
-            <p>The Goodman {coil_spec['model_number']} is a high-efficiency {tonnage_str}-ton {orientation.lower()} evaporator coil designed for use with R-32 refrigerant systems. This cased coil features {coil_spec.get('metering_device', 'TXV')} metering for optimal refrigerant control and includes a factory-installed drain pan for easy installation. Designed for {orientation.lower()} applications, it pairs with compatible outdoor condensing units to deliver reliable cooling performance. This evaporator coil requires a compatible outdoor unit and furnace or air handler (sold separately) to complete your system.</p>
+            <p>The {self.brand} {coil_spec['model_number']} is a high-efficiency {tonnage_str}-ton {orientation.lower()} evaporator coil designed for use with R-32 refrigerant systems. This cased coil features {coil_spec.get('metering_device', 'TXV')} metering for optimal refrigerant control and includes a factory-installed drain pan for easy installation. Designed for {orientation.lower()} applications, it pairs with compatible outdoor condensing units to deliver reliable cooling performance. This evaporator coil requires a compatible outdoor unit and furnace or air handler (sold separately) to complete your system.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -1921,7 +2056,7 @@ class HTMLGenerator:
             <tbody>
                 <tr>
                     <td><strong>Manufacturer</strong></td>
-                    <td>Goodman</td>
+                    <td>{self.brand}</td>
                 </tr>
                 <tr>
                     <td><strong>Model Number</strong></td>
@@ -2011,15 +2146,15 @@ class HTMLGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goodman {afue}% AFUE Gas Furnace - {furnace_spec['model_number']}</title>
+    <title>{self.brand} {afue}% AFUE Gas Furnace - {furnace_spec['model_number']}</title>
     <style>{self.get_common_styles()}</style>
 </head>
 <body>
     <div id="product-container">
-        <h1>Goodman {afue}% AFUE Gas Furnace - {furnace_spec['model_number']}</h1>
+        <h1>{self.brand} {afue}% AFUE Gas Furnace - {furnace_spec['model_number']}</h1>
 
         <div class="intro-section">
-            <p>The Goodman {furnace_spec['model_number']} is a {afue}% AFUE-rated gas furnace delivering {furnace_spec.get('output_btuh', 0):,} BTU/h of heating output. This reliable heating solution features a {furnace_spec.get('heating_stages', 'single-stage')} design and {furnace_spec.get('blower_motor_type', 'multi-speed ECM')} blower motor for consistent comfort and energy efficiency. Designed for residential applications, this furnace provides dependable heating performance with modern efficiency standards. This unit requires professional installation and may require a compatible evaporator coil (sold separately) for air conditioning applications.</p>
+            <p>The {self.brand} {furnace_spec['model_number']} is a {afue}% AFUE-rated gas furnace delivering {furnace_spec.get('output_btuh', 0):,} BTU/h of heating output. This reliable heating solution features a {furnace_spec.get('heating_stages', 'single-stage')} design and {furnace_spec.get('blower_motor_type', 'multi-speed ECM')} blower motor for consistent comfort and energy efficiency. Designed for residential applications, this furnace provides dependable heating performance with modern efficiency standards. This unit requires professional installation and may require a compatible evaporator coil (sold separately) for air conditioning applications.</p>
         </div>
 
         <h2>Technical Specifications</h2>
@@ -2033,7 +2168,7 @@ class HTMLGenerator:
             <tbody>
                 <tr>
                     <td><strong>Manufacturer</strong></td>
-                    <td>Goodman</td>
+                    <td>{self.brand}</td>
                 </tr>
                 <tr>
                     <td><strong>Model Number</strong></td>

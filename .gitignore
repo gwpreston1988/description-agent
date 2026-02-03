@@ -26,3 +26,19 @@ env/
 
 # Logs
 *.log
+
+# Node
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Generated descriptions (large, regenerable)
+**/Generated_Descriptions/
+**/Descriptions/
+output/
+
+# Temporary files
+*.tmp
+*.temp
